@@ -12,3 +12,65 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Member {
+  id        Int      @id @default(autoincrement())
+  name      String
+  userId    String
+  password  String
+  profileImg String
+  backgroundImg String
+  isWithdrawal  Boolean
+  createdAt DateTime @default(now())
+  recommends Recommend[]
+}
+
+model Recommend {
+  id        Int      @id @default(autoincrement())
+  fkMemberId Int
+  fkCodyId Int
+  createdAt DateTime @default(now())
+
+  member  Member    @relation(fields: [fkMemberId], references: [id])
+  cody  Cody    @relation(fields: [fkCodyId], references: [id])
+}
+
+model Cody {
+  id        Int      @id @default(autoincrement())
+  name    String
+  createdAt DateTime @default(now())
+
+  recommends Recommend[]
+  codyClothes CodyClothes[]
+}
+
+model CodyClothes {
+  id        Int      @id @default(autoincrement())
+  fkCodyId  Int
+  fkClothesId Int
+  createdAt DateTime @default(now())
+
+  cody Cody @relation(fields: [fkCodyId], references: [id])
+  clothes Clothes @relation(fields: [fkClothesId], references: [id])
+}
+
+model Clothes {
+  id        Int      @id @default(autoincrement())
+  name      String
+  clothesImg    String
+  description   String
+  position    String
+  fkCategoryId    Int
+  createdAt DateTime @default(now())
+
+  codyClothes CodyClothes[]
+  category  Category  @relation(fields: [fkCategoryId], references: [id])
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+
+  clothes Clothes[]
+}
