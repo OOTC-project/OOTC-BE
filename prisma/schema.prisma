@@ -4,6 +4,9 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// prisma migration
+// npx prisma migrate dev --name init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,7 +23,7 @@ model Member {
   password  String
   profileImg String
   backgroundImg String
-  isWithdrawal  Boolean
+  isWithdrawal  Boolean   @default(false)
   createdAt DateTime @default(now())
   recommends Recommend[]
 }
