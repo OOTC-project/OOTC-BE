@@ -4,7 +4,11 @@ import { Injectable } from '@nestjs/common';
 export class MemberService {
     constructor() {}
 
-    async getMember() {
+    async signUp() {
         return 'getMember';
+    }
+
+    async signIn() {
+        return 'signIn';
     }
 }

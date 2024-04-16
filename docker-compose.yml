@@ -1,0 +1,38 @@
+version: "1"
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      # dockerfile에서 로컬에서 필요로 하지 않는 단계들을 무시하고 오직 development 단계만을 빌드할 것을 나타냅니다.
+#      target: development
+    volumes:
+      # 현재 경로와 컨테이너 내부의 /usr/src/app 디렉토리를 볼륨 마운팅할 것을 나타냅니다.
+      # 데이터가 유지되고, 핫 리로딩을 실행할 부분을 나타냅니다.
+      - .:/usr/src/app
+    # 도커에게 컨테이너 내부로 .env 파일을 로드해야 함을 알려줍니다.
+    env_file:
+      - .env
+    # 도커에게 이미지의 development 단계에 대한 npm run start:dev 명령어를 실행해야 함을 알려줍니다.
+    command: npm run start:dev
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    platform: linux/x86_64
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: cutestar12
+      MYSQL_DATABASE: OOTC
+      MYSQL_USER: root
+      MYSQL_PASSWORD: cutestar12
+      TZ: Asia/Seoul
+    volumes:
+      - ./db/mysql/data:/var/lib/mysql
+      - ./db/mysql/config:/etc/mysql/conf.d
+      - ./db/mysql/init:/docker-entrypoint-initdb.d
