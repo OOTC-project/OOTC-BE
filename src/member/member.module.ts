@@ -3,7 +3,7 @@ import { MemberController } from './member.controller';
 import { MemberService } from './member.service';
 
 @Module({
-  controllers: [MemberController],
-  providers: [MemberService]
+    controllers: [MemberController],
+    providers: [MemberService],
 })
 export class MemberModule {}
