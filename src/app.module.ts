@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MemberModule } from './member/member.module';
-import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
     imports: [
@@ -11,7 +11,7 @@ import { ConfigModule } from '@nestjs/config';
         PrismaModule,
         ConfigModule.forRoot({
             // envFilePath: `config/.env.${process.env.NODE_ENV}`,
-            envFilePath: `.env`,
+            envFilePath: [`.env`],
             isGlobal: true,
             // validationSchema: Joi.object({
             // MYSQL_HOST: Joi.string().required(),
