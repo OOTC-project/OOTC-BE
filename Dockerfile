@@ -10,8 +10,11 @@ WORKDIR /usr/src/app
 # Install app dependencies by copying package.json and package-lock.json
 COPY --chown=node:node package*.json ./
 
-# Install all dependencies
+# Install all dependencies, including devDependencies
 RUN npm ci
+
+# If the Nest CLI is not part of your package.json, install it globally
+RUN npm install -g @nestjs/cli
 
 # Copy local code to the container image
 COPY --chown=node:node . .
