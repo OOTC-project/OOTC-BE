@@ -19,6 +19,9 @@ RUN npm install -g @nestjs/cli
 # Copy local code to the container image
 COPY --chown=node:node . .
 
+# Generate Prisma client
+RUN npx prisma generate
+
 # Switch to user 'node' for security
 USER node
 
