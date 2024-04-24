@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MemberModule } from './member/member.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
+import { AdapterConfigModule } from './config/adapterConfig.module';
 
 @Module({
     imports: [
-        MemberModule,
         PrismaModule,
         ConfigModule.forRoot({
             // envFilePath: `config/.env.${process.env.NODE_ENV}`,
@@ -28,6 +28,8 @@ import { PrismaModule } from './prisma/prisma.module';
             // JWT_SESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
             // }),
         }),
+        AuthModule,
+        AdapterConfigModule,
     ],
     controllers: [AppController],
     providers: [AppService],
