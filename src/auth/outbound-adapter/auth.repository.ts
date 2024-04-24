@@ -6,15 +6,16 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class AuthRepository implements AuthOutBoundPort {
     constructor(private readonly prisma: PrismaService) {}
 
-    async signIn(userData: RequestOfSignIn) {
+    async signIn(userData: RequestOfSignIn, files: { profileImg?: Express.Multer.File[]; backgroundImg?: Express.Multer.File[] }) {
         const { userId, password, name, profileImg, backgroundImg } = userData;
+        const { profileImg: profileImage, backgroundImg: backgroundImage } = files;
 
         return this.prisma.member.create({
             data: {
                 userId,
                 password,
-                profileImg,
-                backgroundImg,
+                profileImg: profileImage,
+                backgroundImg: backgroundImage,
                 name,
             },
         });

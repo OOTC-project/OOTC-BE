@@ -9,5 +9,5 @@ export type RequestOfSignIn = {
 };
 
 export interface AuthOutBoundPort {
-    signIn(userData: RequestOfSignIn);
+    signIn(userData: RequestOfSignIn, files: { profileImg?: Express.Multer.File[]; backgroundImg?: Express.Multer.File[] });
 }

@@ -9,7 +9,7 @@ export class AuthService implements AuthInboundPort {
         private readonly authOutboundPort: AuthOutBoundPort,
     ) {}
 
-    async signUp(userData: RequestOfSignIn) {
-        return await this.authOutboundPort.signIn(userData);
+    async signUp(userData: RequestOfSignIn, files: { profileImg?: Express.Multer.File[]; backgroundImg?: Express.Multer.File[] }) {
+        return await this.authOutboundPort.signIn(userData, files);
     }
 }
