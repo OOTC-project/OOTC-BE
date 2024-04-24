@@ -1,3 +1,13 @@
-export const ADMIN_OUTBOUND_PORT = 'ADMIN_OUTBOUND_PORT' as const;
+export const AUTH_OUTBOUND_PORT = 'AUTH_OUTBOUND_PORT' as const;
 
-export interface AuthOutBoundaryPort {}
+export type RequestOfSignIn = {
+    userId: string;
+    password: string;
+    profileImg: string;
+    backgroundImg: string;
+    name: string;
+};
+
+export interface AuthOutBoundPort {
+    signIn(userData: RequestOfSignIn);
+}

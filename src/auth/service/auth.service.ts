@@ -1,4 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { AuthInboundPort, RequestOfSignIn } from '../inbound-port/auth.inbound-port';
+import { AUTH_OUTBOUND_PORT, AuthOutBoundPort } from '../outbound-port/auth.outbound-port';
 
 @Injectable()
-export class AuthService {}
+export class AuthService implements AuthInboundPort {
+    constructor(
+        @Inject(AUTH_OUTBOUND_PORT)
+        private readonly authOutboundPort: AuthOutBoundPort,
+    ) {}
+
+    async signUp(userData: RequestOfSignIn) {
+        return await this.authOutboundPort.signIn(userData);
+    }
+}
