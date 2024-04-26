@@ -3,6 +3,7 @@ import { AUTH_INBOUND_PORT, AuthInboundPort } from '../inbound-port/auth.inbound
 import { RequestSignupDto } from '../dtos/request_signup.dto';
 import { UploadToS3 } from '../../common/decorator';
 import { AWSS3Type } from '../../common/type/aws_s3.type';
+import { ResponseSignupDto } from '../dtos/response_signup.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -14,6 +15,7 @@ export class AuthController {
     @Post('signUp')
     @UploadToS3([{ name: 'profileImg' }, { name: 'backgroundImg' }])
     async signUp(@Body() userData: RequestSignupDto, @UploadedFiles() files: AWSS3Type) {
-        return await this.authInboundPort.signUp(userData, files);
+        const signInData = await this.authInboundPort.signUp(userData, files);
+        return new ResponseSignupDto(signInData);
     }
 }

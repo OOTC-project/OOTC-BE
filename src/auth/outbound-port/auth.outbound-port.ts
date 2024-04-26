@@ -10,11 +10,17 @@ export type RequestOfSignIn = {
     name: string;
 };
 
-export type s3ImageUrlObject = {
+export type ResponseOfSignIn = {
+    id: number;
+    name: string;
+    userId: string;
+    password: string;
     profileImg: string;
     backgroundImg: string;
+    isWithdrawal: boolean;
+    createdAt: string | Date;
 };
 
 export interface AuthOutBoundPort {
-    signIn(userData: RequestOfSignIn, files: s3ImageUrlObject);
+    signIn(userData: RequestOfSignIn, files: AWSS3Type): Promise<ResponseOfSignIn>;
 }

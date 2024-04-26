@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { AdapterConfigModule } from './config/adapterConfig.module';
 import { ConfigAdapter } from './config/outbound-adapter/config.adapter';
 import { CONFIG_OUTBOUND_PORT } from './config/outbound-port/config.outbound-port';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseInterceptor } from './common/interceptor/response.interceptor';
 
 @Module({
     imports: [
@@ -20,6 +22,10 @@ import { CONFIG_OUTBOUND_PORT } from './config/outbound-port/config.outbound-por
     ],
     controllers: [AppController],
     providers: [
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ResponseInterceptor,
+        },
         AppService,
         {
             provide: CONFIG_OUTBOUND_PORT,

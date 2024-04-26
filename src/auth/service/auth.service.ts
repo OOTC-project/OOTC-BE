@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { AuthInboundPort, RequestOfSignIn } from '../inbound-port/auth.inbound-port';
 import { AUTH_OUTBOUND_PORT, AuthOutBoundPort } from '../outbound-port/auth.outbound-port';
 import { AWSS3Type } from '../../common/type/aws_s3.type';
-import { s3ImageUrlFunction } from '../../common/function/s3_imageUrl.function';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -13,15 +12,11 @@ export class AuthService implements AuthInboundPort {
     ) {}
 
     async signUp(userData: RequestOfSignIn, files: AWSS3Type) {
-        const profileImgUrl = s3ImageUrlFunction(files.profileImg[0].originalname);
-
-        const backgroundImgUrl = s3ImageUrlFunction(files.backgroundImg[0].originalname);
-
         const hashedPassword = await bcrypt.hash(userData.password, 10);
         const hashedPasswordUserData = {
             ...userData,
             password: hashedPassword,
         };
-        return await this.authOutboundPort.signIn(hashedPasswordUserData, { profileImg: profileImgUrl, backgroundImg: backgroundImgUrl });
+        return await this.authOutboundPort.signIn(hashedPasswordUserData, files);
     }
 }
