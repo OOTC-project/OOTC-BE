@@ -19,6 +19,13 @@ async function bootstrap() {
         logger: console,
     });
 
+    app.enableCors({
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        origin: true,
+        credentials: true,
+        exposedHeaders: 'Authorization',
+    });
+
     app.useGlobalFilters(new HttpExceptionFilter());
     const prismaService = app.get(PrismaService);
     await prismaService.enableShutdownHooks(app);

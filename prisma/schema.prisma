@@ -20,7 +20,7 @@ datasource db {
 model Member {
   id        Int      @id @default(autoincrement())
   name      String
-  userId    String
+  userId    String @unique
   password  String
   profileImg String
   backgroundImg String

@@ -11,27 +11,37 @@ export function UploadToS3(fields: { name: string; maxCount?: number }[]) {
                 region: 'ap-northeast-2',
             });
 
-            const uploadPromises = fields
-                .map((field) => {
-                    return (request.files[field.name] || []).map((file) =>
-                        s3
-                            .upload({
-                                Bucket: 'ootc', // Specify your bucket name here
-                                Key: file.originalname,
-                                Body: file.buffer,
-                                ACL: 'authenticated-read', // Adjust the ACL according to your requirements
-                            })
-                            .promise()
-                            .then((result) => ({ fieldName: field.name, url: result.Location })),
-                    );
-                })
-                .flat();
+            // Prepare to upload files to S3 and convert array to object
+            const uploadPromises = fields.map((field) => {
+                const file = request.files[field.name][0]; // Take the first file in the array
+                return s3
+                    .upload({
+                        Bucket: 'ootc',
+                        Key: file.originalname,
+                        Body: file.buffer,
+                        ACL: 'authenticated-read',
+                        ContentType: file.mimetype,
+                    })
+                    .promise()
+                    .then((result) => ({
+                        fieldName: field.name,
+                        fileData: {
+                            fieldname: file.fieldname,
+                            originalname: file.originalname,
+                            encoding: file.encoding,
+                            mimetype: file.mimetype,
+                            size: file.size,
+                            buffer: file.buffer, // It is usually not advisable to keep the buffer here due to size and security concerns
+                            url: result.Location,
+                        },
+                    }));
+            });
 
             const uploadResults = await Promise.all(uploadPromises);
 
-            // Group URLs by field name
-            request.body.s3Urls = uploadResults.reduce((acc, result) => {
-                (acc[result.fieldName] = acc[result.fieldName] || []).push(result.url);
+            // Convert array of results to an object keyed by field names
+            request.body.uploadedFiles = uploadResults.reduce((acc, result) => {
+                acc[result.fieldName] = result.fileData; // Assign the file data directly to the field name
                 return acc;
             }, {});
 

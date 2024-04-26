@@ -1,3 +1,5 @@
+import { AWSS3Type } from '../../common/type/aws_s3.type';
+
 export const AUTH_OUTBOUND_PORT = 'AUTH_OUTBOUND_PORT' as const;
 
 export type RequestOfSignIn = {
@@ -8,6 +10,11 @@ export type RequestOfSignIn = {
     name: string;
 };
 
+export type s3ImageUrlObject = {
+    profileImg: string;
+    backgroundImg: string;
+};
+
 export interface AuthOutBoundPort {
-    signIn(userData: RequestOfSignIn, files: { profileImg?: Express.Multer.File[]; backgroundImg?: Express.Multer.File[] });
+    signIn(userData: RequestOfSignIn, files: s3ImageUrlObject);
 }
