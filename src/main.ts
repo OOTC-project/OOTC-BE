@@ -45,6 +45,7 @@ async function bootstrap() {
     const document: OpenAPIObject = SwaggerModule.createDocument(app, configBuilder);
     SwaggerModule.setup('docs', app, document);
     await app.listen(3000, '0.0.0.0');
+    console.log(`ENV :::: ${process.env.NODE_ENV}`);
 }
 
 bootstrap();
