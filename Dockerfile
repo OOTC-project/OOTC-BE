@@ -1,82 +1,84 @@
-# Use multi-stage builds to keep the final production image clean and minimal
 ###################
-# STAGE 1: BUILD FOR LOCAL DEVELOPMENT
+# BUILD FOR LOCAL DEVELOPMENT
 ###################
+
 FROM node:20-alpine AS development
 
-# Set the working directory in the container
+# Create app directory
 WORKDIR /usr/src/app
 
-# Install app dependencies by first copying the package.json files
+# Install app dependencies by copying package.json and package-lock.json
 COPY --chown=node:node package*.json ./
 
-# Install all dependencies necessary for development
+# Install all dependencies, including devDependencies
 RUN npm ci
 
-# Globally install the Nest CLI to aid in development
+# If the Nest CLI is not part of your package.json, install it globally
 RUN npm install -g @nestjs/cli
 
-# Copy the entire project code into the container
+# Copy local code to the container image
 COPY --chown=node:node . .
 
-# Generate Prisma client which is essential for database interactions
+# Generate Prisma client
 RUN npx prisma generate
 
-# Use non-root user for better security practices
+# Switch to user 'node' for security
 USER node
 
-# Expose the port the application runs on
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Command to run the app in development with hot reloading
+# Run the app using npm run start:dev for hot reloading
 CMD ["npm", "run", "start:dev"]
 
 ###################
-# STAGE 2: BUILD FOR PRODUCTION
+# BUILD FOR PRODUCTION
 ###################
+
 FROM node:20-alpine AS build
 
-# Set the working directory
+# Set working directory
 WORKDIR /usr/src/app
 
-# Copy over only necessary files for building the app
+# Copying necessary files
 COPY --chown=node:node . .
 
-# Install dependencies, including both production and development
+# Install dependencies including 'devDependencies'
 RUN npm ci
 
-# Build the application into JavaScript from TypeScript
+# Build the project
 RUN npm run build
 
-# Prune development dependencies to minimize image size
+# Remove development dependencies
 RUN npm ci --only=production
 
-# Ensure the environment is set for production
+# Set environment to production
 ENV NODE_ENV production
 
-# Use non-root user for added security
+# Use 'node' user
 USER node
 
 ###################
-# STAGE 3: PRODUCTION IMAGE SETUP
+# PRODUCTION
 ###################
+
 FROM node:20-alpine AS production
 
-# Set working directory in the final production image
+# Set working directory
 WORKDIR /usr/src/app
 
-# Copy over node modules and build directories from the build stage
+# Copying from build stage
 COPY --from=build --chown=node:node /usr/src/app/node_modules ./node_modules
 COPY --from=build --chown=node:node /usr/src/app/dist ./dist
 
-# Confirm environment is production to optimize Node.js performance
+# Set environment to production
 ENV NODE_ENV production
 
-# Continue to run as non-root user
+# Use 'node' user
 USER node
 
-# Expose the same port as in development
+# Expose port 3000
 EXPOSE 3000
 
-# Command to run your app using the prebuilt distribution files
+# Command to run the app
 CMD ["node", "dist/main.js"]
