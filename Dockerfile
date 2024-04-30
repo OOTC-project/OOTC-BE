@@ -29,7 +29,7 @@ USER node
 EXPOSE 3000
 
 # Run the app using npm run start:dev for hot reloading
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start:prod"]
 
 ###################
 # BUILD FOR PRODUCTION
