@@ -81,4 +81,5 @@ USER node
 EXPOSE 3000
 
 # Command to run the app
-CMD ["node", "dist/main.js"]
+#CMD ["node", "dist/main.js"]
+CMD ["npm", "run", "start:prod"]
