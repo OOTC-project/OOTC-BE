@@ -44,13 +44,15 @@ WORKDIR /usr/src/app
 COPY --chown=node:node . .
 
 # Install dependencies including 'devDependencies'
-RUN npm ci
+RUN npm ci && \
+    npm run build && \
+    npm ci --only=production
 
-# Build the project
-RUN npm run build
-
-# Remove development dependencies
-RUN npm ci --only=production
+## Build the project
+#RUN npm run build
+#
+## Remove development dependencies
+#RUN npm ci --only=production
 
 # Set environment to production
 ENV NODE_ENV production
@@ -83,3 +85,4 @@ EXPOSE 3000
 # Command to run the app
 #CMD ["node", "dist/main.js"]
 CMD ["npm", "run", "start:prod"]
+
