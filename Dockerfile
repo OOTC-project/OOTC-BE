@@ -44,15 +44,16 @@ WORKDIR /usr/src/app
 COPY --chown=node:node . .
 
 # Install dependencies including 'devDependencies'
-RUN npm ci && \
-    npm run build && \
-    npm ci --only=production
+RUN npm ci
 
-## Build the project
-#RUN npm run build
-#
-## Remove development dependencies
-#RUN npm ci --only=production
+# Build the project
+RUN NODE_OPTIONS=--max-old-space-size=2048 npm run build
+
+# Remove development dependencies
+RUN npm ci --only=production
+
+## Set node.js runtime memory
+#ENV NODE_OPTIONS=--max-old-space-size=2048
 
 # Set environment to production
 ENV NODE_ENV production
