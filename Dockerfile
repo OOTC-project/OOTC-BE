@@ -52,9 +52,6 @@ RUN NODE_OPTIONS=--max-old-space-size=2048 npm run build
 # Remove development dependencies
 RUN npm ci --only=production
 
-## Set node.js runtime memory
-#ENV NODE_OPTIONS=--max-old-space-size=2048
-
 # Set environment to production
 ENV NODE_ENV production
 
@@ -84,6 +81,7 @@ USER node
 EXPOSE 3000
 
 # Command to run the app
-CMD ["node", "dist/main.js"]
+#CMD ["node", "dist/main.js"]
 #CMD ["npm", "run", "start:prod"]
+CMD ["npm","run","start:debug"]
 
