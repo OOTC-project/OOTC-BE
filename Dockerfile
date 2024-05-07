@@ -47,7 +47,7 @@ COPY --chown=node:node . .
 RUN npm ci
 
 # Build the project
-RUN NODE_OPTIONS=--max-old-space-size=2048 npm run build
+RUN NODE_OPTIONS=--max-old-space-size=4096 npm run build
 
 # Remove development dependencies
 RUN npm ci --only=production
