@@ -1,5 +1,5 @@
-import { ResponseOfSignIn } from '../outbound-port/auth.outbound-port';
 import { s3ImageUrlFunction } from '../../common/function/s3_imageUrl.function';
+import { ResponseOfSignUp } from '../types/auth.types';
 
 export class ResponseSignupDto {
     id: number;
@@ -10,7 +10,7 @@ export class ResponseSignupDto {
     isWithdrawal: boolean;
     createdAt: string | Date;
 
-    constructor(responseOfSignIn: ResponseOfSignIn) {
+    constructor(responseOfSignIn: ResponseOfSignUp) {
         this.id = responseOfSignIn.id;
         this.name = responseOfSignIn.name;
         this.userId = responseOfSignIn.userId;

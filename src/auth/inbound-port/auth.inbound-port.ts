@@ -1,15 +1,10 @@
 import { AWSS3Type } from '../../common/type/aws_s3.type';
+import { RequestOfSignIn, RequestOfSignUp, ResponseOfSignUp } from '../types/auth.types';
 
 export const AUTH_INBOUND_PORT = 'AUTH_INBOUND_PORT' as const;
 
-export type RequestOfSignIn = {
-    userId: string;
-    password: string;
-    profileImg: string;
-    backgroundImg: string;
-    name: string;
-};
-
 export interface AuthInboundPort {
-    signUp(userData: RequestOfSignIn, files: AWSS3Type);
+    signUp(userData: RequestOfSignUp, files: AWSS3Type): Promise<ResponseOfSignUp>;
+
+    signIn(userData: RequestOfSignIn);
 }

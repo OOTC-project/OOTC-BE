@@ -4,6 +4,7 @@ import { RequestSignupDto } from '../dtos/request_signup.dto';
 import { UploadToS3 } from '../../common/decorator';
 import { AWSS3Type } from '../../common/type/aws_s3.type';
 import { ResponseSignupDto } from '../dtos/response_signup.dto';
+import { RequestSignInDto } from '../dtos/request_signIn.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -18,4 +19,6 @@ export class AuthController {
         const signInData = await this.authInboundPort.signUp(userData, files);
         return new ResponseSignupDto(signInData);
     }
+
+    async signIn(logInData: RequestSignInDto) {}
 }

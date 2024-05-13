@@ -17,6 +17,13 @@ export class RequestSignupDto {
     readonly password: string;
 
     @ApiProperty({
+        description: '비밀번호 확인',
+        example: '12345678',
+    })
+    @IsNotEmpty()
+    readonly passwordConfirm: string;
+
+    @ApiProperty({
         description: '사용자이름',
         example: '내이름은 코난',
     })

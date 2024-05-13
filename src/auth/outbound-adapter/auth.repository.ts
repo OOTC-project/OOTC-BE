@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { AuthOutBoundPort, RequestOfSignIn, ResponseOfSignIn } from '../outbound-port/auth.outbound-port';
+import { AuthOutBoundPort } from '../outbound-port/auth.outbound-port';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AWSS3Type } from '../../common/type/aws_s3.type';
+import { RequestOfSignIn, RequestOfSignUp, ResponseOfSignUp } from '../types/auth.types';
 
 @Injectable()
 export class AuthRepository implements AuthOutBoundPort {
     constructor(private readonly prisma: PrismaService) {}
 
-    async signIn(userData: RequestOfSignIn, files: AWSS3Type): Promise<ResponseOfSignIn> {
+    async signUp(userData: RequestOfSignUp, files: AWSS3Type): Promise<ResponseOfSignUp> {
         const { userId, password, name } = userData;
         const { profileImg, backgroundImg } = files;
 
@@ -21,4 +22,6 @@ export class AuthRepository implements AuthOutBoundPort {
             },
         });
     }
+
+    async signIn(userData: RequestOfSignIn) {}
 }
