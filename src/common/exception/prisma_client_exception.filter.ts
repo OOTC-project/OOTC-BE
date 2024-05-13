@@ -18,19 +18,21 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     }
 
     private formatMessage(exception: Prisma.PrismaClientKnownRequestError): string {
+        console.log(exception.meta);
         switch (exception.code) {
             case 'P2002':
                 if (exception.meta && this.isArrayOfString(exception.meta['target'])) {
                     const fields = exception.meta['target'].join(', ');
                     return `해당 ${fields}을(를) 가진 사용자가 이미 존재합니다. 다른 ${fields}을(를) 선택해주세요.`;
                 }
-                return '유니크 제약 조건이 실패했습니다.';
+
+                return `${exception.meta?.target} 유니크 제약 조건이 실패했습니다.`;
             case 'P2003':
-                return `필드 ${exception.meta?.field}에 대한 외래 키 제약 조건이 실패했습니다.`;
+                return `필드 ${exception.meta?.target}에 대한 외래 키 제약 조건이 실패했습니다.`;
             case 'P2004':
                 return '데이터베이스에 제약 조건이 실패했습니다.';
             case 'P2005':
-                return `필드 ${exception.meta?.field}에 제공된 값이 잘못되었습니다.`;
+                return `필드 ${exception.meta?.target}에 제공된 값이 잘못되었습니다.`;
             case 'P2006':
                 return '필드에 제공된 값이 너무 깁니다.';
             case 'P2007':
