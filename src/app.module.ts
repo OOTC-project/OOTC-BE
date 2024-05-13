@@ -9,12 +9,13 @@ import { ConfigAdapter } from './config/outbound-adapter/config.adapter';
 import { CONFIG_OUTBOUND_PORT } from './config/outbound-port/config.outbound-port';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './common/interceptor/response.interceptor';
+import * as process from 'node:process';
 
 @Module({
     imports: [
         PrismaModule,
         ConfigModule.forRoot({
-            envFilePath: [`.env`],
+            envFilePath: [`.env.${process.env.NODE_ENV}`],
             isGlobal: true,
         }),
         AuthModule,

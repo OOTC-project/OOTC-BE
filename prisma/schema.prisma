@@ -1,14 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-// prisma migration
-// npx prisma migrate dev --name init
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
 }
 
@@ -18,63 +9,66 @@ datasource db {
 }
 
 model Member {
-  id        Int      @id @default(autoincrement())
-  name      String
-  userId    String @unique
-  password  String
-  profileImg String
+  id            Int         @id @default(autoincrement())
+  name          String
+  userId        String      @unique
+  password      String
+  profileImg    String
   backgroundImg String
-  isWithdrawal  Boolean   @default(false)
-  createdAt DateTime @default(now())
-  recommends Recommend[]
+  isWithdrawal  Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  recommends    Recommend[]
 }
 
 model Recommend {
-  id        Int      @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   fkMemberId Int
-  fkCodyId Int
-  createdAt DateTime @default(now())
+  fkCodyId   Int
+  createdAt  DateTime @default(now())
+  cody       Cody     @relation(fields: [fkCodyId], references: [id])
+  member     Member   @relation(fields: [fkMemberId], references: [id])
 
-  member  Member    @relation(fields: [fkMemberId], references: [id])
-  cody  Cody    @relation(fields: [fkCodyId], references: [id])
+  @@index([fkCodyId], map: "Recommend_fkCodyId_fkey")
+  @@index([fkMemberId], map: "Recommend_fkMemberId_fkey")
 }
 
 model Cody {
-  id        Int      @id @default(autoincrement())
-  name    String
-  createdAt DateTime @default(now())
-
-  recommends Recommend[]
+  id          Int           @id @default(autoincrement())
+  name        String
+  createdAt   DateTime      @default(now())
   codyClothes CodyClothes[]
+  recommends  Recommend[]
 }
 
 model CodyClothes {
-  id        Int      @id @default(autoincrement())
-  fkCodyId  Int
+  id          Int      @id @default(autoincrement())
+  fkCodyId    Int
   fkClothesId Int
-  createdAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  clothes     Clothes  @relation(fields: [fkClothesId], references: [id])
+  cody        Cody     @relation(fields: [fkCodyId], references: [id])
 
-  cody Cody @relation(fields: [fkCodyId], references: [id])
-  clothes Clothes @relation(fields: [fkClothesId], references: [id])
+  @@index([fkClothesId], map: "CodyClothes_fkClothesId_fkey")
+  @@index([fkCodyId], map: "CodyClothes_fkCodyId_fkey")
 }
 
 model Clothes {
-  id        Int      @id @default(autoincrement())
-  name      String
-  clothesImg    String
-  description   String
-  position    String
-  fkCategoryId    Int
-  createdAt DateTime @default(now())
+  id           Int           @id @default(autoincrement())
+  name         String
+  clothesImg   String
+  description  String
+  position     String
+  fkCategoryId Int
+  createdAt    DateTime      @default(now())
+  category     Category      @relation(fields: [fkCategoryId], references: [id])
+  codyClothes  CodyClothes[]
 
-  codyClothes CodyClothes[]
-  category  Category  @relation(fields: [fkCategoryId], references: [id])
+  @@index([fkCategoryId], map: "Clothes_fkCategoryId_fkey")
 }
 
 model Category {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   name      String
-  createdAt DateTime @default(now())
-
-  clothes Clothes[]
+  createdAt DateTime  @default(now())
+  clothes   Clothes[]
 }

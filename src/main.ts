@@ -9,8 +9,15 @@ import { config } from 'aws-sdk';
 import { ValidationPipe } from '@nestjs/common';
 import { TrimPipe } from './common/pipe/trim.pipe';
 import { PrismaClientExceptionFilter } from './common/exception/prisma_client_exception.filter';
+import * as process from 'node:process';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
 async function bootstrap() {
+    dotenv.config({
+        path: path.resolve(process.env.NODE_ENV === 'production' ? '.env' : '.env.debug'),
+    });
+
     const app = await NestFactory.create(AppModule);
 
     const configAdapter = app.get<ConfigAdapter>(CONFIG_OUTBOUND_PORT);
