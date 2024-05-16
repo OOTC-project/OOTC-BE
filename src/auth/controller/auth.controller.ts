@@ -16,9 +16,12 @@ export class AuthController {
     @Post('signUp')
     @UploadToS3([{ name: 'profileImg' }, { name: 'backgroundImg' }])
     async signUp(@Body() userData: RequestSignupDto, @UploadedFiles() files: AWSS3Type) {
-        const signInData = await this.authInboundPort.signUp(userData, files);
-        return new ResponseSignupDto(signInData);
+        const signUpData = await this.authInboundPort.signUp(userData, files);
+        return new ResponseSignupDto(signUpData);
     }
 
-    async signIn(logInData: RequestSignInDto) {}
+    @Post('signIn')
+    async signIn(logInData: RequestSignInDto) {
+        return await this.authInboundPort.signIn(logInData);
+    }
 }
