@@ -19,5 +19,6 @@ import { PrismaModule } from '../prisma/prisma.module';
             useClass: AuthRepository,
         },
     ],
+    exports: [AUTH_OUTBOUND_PORT],
 })
 export class AuthModule {}

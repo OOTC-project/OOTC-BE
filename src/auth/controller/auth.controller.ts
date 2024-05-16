@@ -5,6 +5,7 @@ import { UploadToS3 } from '../../common/decorator';
 import { AWSS3Type } from '../../common/type/aws_s3.type';
 import { ResponseSignupDto } from '../dtos/response_signup.dto';
 import { RequestSignInDto } from '../dtos/request_signIn.dto';
+import { RequestValidateDto } from '../dtos/request_validate.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -21,7 +22,12 @@ export class AuthController {
     }
 
     @Post('signIn')
-    async signIn(logInData: RequestSignInDto) {
+    async signIn(@Body() logInData: RequestSignInDto) {
         return await this.authInboundPort.signIn(logInData);
+    }
+
+    @Post('validate')
+    async validate(@Body() validateData: RequestValidateDto) {
+        return await this.authInboundPort.validateUser(validateData);
     }
 }

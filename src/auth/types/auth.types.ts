@@ -22,3 +22,8 @@ export type ResponseOfSignUp = {
     isWithdrawal: boolean;
     createdAt: string | Date;
 };
+
+export type RequestOfValidate = {
+    userId: string;
+    password: string;
+};

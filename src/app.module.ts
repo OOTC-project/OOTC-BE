@@ -9,6 +9,8 @@ import { ConfigAdapter } from './config/outbound-adapter/config.adapter';
 import { CONFIG_OUTBOUND_PORT } from './config/outbound-port/config.outbound-port';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './common/interceptor/response.interceptor';
+import { PassportAdapterModule } from './passport/passport.module';
+import { JwtAdapterModule } from './jwt/jwt.module';
 import * as process from 'node:process';
 
 @Module({
@@ -20,6 +22,8 @@ import * as process from 'node:process';
         }),
         AuthModule,
         AdapterConfigModule,
+        PassportAdapterModule,
+        JwtAdapterModule,
     ],
     controllers: [AppController],
     providers: [

@@ -24,4 +24,10 @@ export class AuthRepository implements AuthOutBoundPort {
     }
 
     async signIn(userData: RequestOfSignIn) {}
+
+    async validateUser(userId: string, password: string) {
+        return this.prisma.member.findUnique({
+            where: { userId },
+        });
+    }
 }
