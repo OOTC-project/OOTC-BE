@@ -1,5 +1,5 @@
 import { AWSS3Type } from '../../common/type/aws_s3.type';
-import { RequestOfSignIn, RequestOfSignUp, RequestOfValidate, ResponseOfSignUp } from '../types/auth.types';
+import { RequestOfFind, RequestOfResetPassword, RequestOfSignIn, RequestOfSignUp, RequestOfValidate, ResponseOfFindId, ResponseOfSignUp } from '../types/auth.types';
 
 export const AUTH_INBOUND_PORT = 'AUTH_INBOUND_PORT' as const;
 
@@ -9,4 +9,10 @@ export interface AuthInboundPort {
     signIn(userData: RequestOfSignIn);
 
     validateUser(userData: RequestOfValidate);
+
+    findId(findIdData: RequestOfFind): Promise<ResponseOfFindId>;
+
+    checkValidate(findPasswordData: RequestOfFind);
+
+    resetPassword(resetPasswordData: RequestOfResetPassword);
 }

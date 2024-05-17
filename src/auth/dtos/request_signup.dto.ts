@@ -41,4 +41,10 @@ export class RequestSignupDto {
         format: 'binary',
     })
     readonly backgroundImg: string;
+
+    @ApiProperty({
+        description: '이메일',
+        example: 'wjdgusxo99@gmail.com',
+    })
+    readonly email: string;
 }

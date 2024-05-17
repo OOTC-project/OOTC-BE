@@ -7,4 +7,10 @@ export interface AuthOutBoundPort {
     signUp(userData: RequestOfSignUp, files: AWSS3Type): Promise<ResponseOfSignUp>;
 
     validateUser(userid: string);
+
+    validateUserByName(name: string, email: string);
+
+    checkValidate(userId: string, email: string, name: string);
+
+    resetPassword(id: number, hashedPassword: string);
 }
