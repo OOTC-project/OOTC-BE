@@ -13,6 +13,7 @@ import { PassportAdapterModule } from './passport/passport.module';
 import { JwtAdapterModule } from './jwt/jwt.module';
 import * as process from 'node:process';
 import { LoggerMiddleware } from './logger/logger.middleware';
+import { CategoryModule } from './category/category.module';
 
 @Module({
     imports: [
@@ -25,6 +26,7 @@ import { LoggerMiddleware } from './logger/logger.middleware';
         AdapterConfigModule,
         PassportAdapterModule,
         JwtAdapterModule,
+        CategoryModule,
     ],
     controllers: [AppController],
     providers: [
