@@ -10,15 +10,5 @@ module.exports = {
                 NODE_ENV: 'production',
             },
         },
-        {
-            name: 'OOTC-development',
-            script: './dist/main.js',
-            instances: 1,
-            autorestart: false,
-            watch: false,
-            env: {
-                NODE_ENV: 'debug',
-            },
-        },
     ],
 };
