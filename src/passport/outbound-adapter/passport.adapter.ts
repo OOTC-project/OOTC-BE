@@ -2,19 +2,19 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportOutboundPort } from '../outbound-port/passport.outbound-port';
-import { AUTH_OUTBOUND_PORT, AuthOutBoundPort } from '../../auth/outbound-port/auth.outbound-port';
+import { AUTH_INBOUND_PORT, AuthInboundPort } from '../../auth/inbound-port/auth.inbound-port';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
     constructor(
-        @Inject(AUTH_OUTBOUND_PORT)
-        private readonly authOutboundPort: AuthOutBoundPort,
+        @Inject(AUTH_INBOUND_PORT)
+        private readonly authInboundPort: AuthInboundPort,
     ) {
         super();
     }
 
     async validate(userId: string, password: string): Promise<any> {
-        const user = await this.authOutboundPort.validateUser(userId, password);
+        const user = await this.authInboundPort.validateUser({ userId, password });
         if (!user) {
             throw new UnauthorizedException();
         }

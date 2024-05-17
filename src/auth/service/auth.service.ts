@@ -29,12 +29,26 @@ export class AuthService implements AuthInboundPort {
         return await this.authOutboundPort.signUp(hashedPasswordUserData, files);
     }
 
-    async signIn(userData: RequestOfSignIn) {}
+    async signIn(logInData: RequestOfSignIn): Promise<{ accessToken: string }> {
+        const { userId } = logInData;
+        const user = await this.authOutboundPort.validateUser(userId);
+        console.log('=>(auth.service.ts:35) user', user);
+
+        if (!user) {
+            throw new UnauthorizedException('Invalid credentials');
+        }
+
+        const payload = { sub: user.id, username: user.name };
+        console.log('=>(auth.service.ts:41) payload', payload);
+        const accessToken = this.jwtOutboundPort.sign(payload);
+
+        return { accessToken };
+    }
 
     async validateUser(userData: RequestOfSignIn) {
         const { userId, password } = userData;
 
-        const findMemberByUserId = await this.authOutboundPort.validateUser(userId, password);
+        const findMemberByUserId = await this.authOutboundPort.validateUser(userId);
         if (findMemberByUserId.length === 0) {
             throw new UnauthorizedException('해당 계정이 없습니다');
         }

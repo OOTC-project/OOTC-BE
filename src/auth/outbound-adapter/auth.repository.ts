@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthOutBoundPort } from '../outbound-port/auth.outbound-port';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AWSS3Type } from '../../common/type/aws_s3.type';
-import { RequestOfSignIn, RequestOfSignUp, ResponseOfSignUp } from '../types/auth.types';
+import { RequestOfSignUp, ResponseOfSignUp } from '../types/auth.types';
 
 @Injectable()
 export class AuthRepository implements AuthOutBoundPort {
@@ -23,9 +23,7 @@ export class AuthRepository implements AuthOutBoundPort {
         });
     }
 
-    async signIn(userData: RequestOfSignIn) {}
-
-    async validateUser(userId: string, password: string) {
+    async validateUser(userId: string) {
         return this.prisma.member.findUnique({
             where: { userId },
         });

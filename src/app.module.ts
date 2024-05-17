@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -12,6 +12,7 @@ import { ResponseInterceptor } from './common/interceptor/response.interceptor';
 import { PassportAdapterModule } from './passport/passport.module';
 import { JwtAdapterModule } from './jwt/jwt.module';
 import * as process from 'node:process';
+import { LoggerMiddleware } from './logger/logger.middleware';
 
 @Module({
     imports: [
@@ -38,4 +39,8 @@ import * as process from 'node:process';
         },
     ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer): any {
+        consumer.apply(LoggerMiddleware).forRoutes('*');
+    }
+}
