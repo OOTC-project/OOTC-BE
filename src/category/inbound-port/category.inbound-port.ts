@@ -7,6 +7,8 @@ export interface CategoryInboundPort {
 
     findAllCategories();
 
+    findOneCategory(id: number);
+
     updateCategory(id: number, updateCategory: UpdateCategory);
 
     deleteCategory(id: number);

@@ -16,7 +16,14 @@ export class CategoryController {
     }
 
     @Get()
-    async findAllCategories() {}
+    async findAllCategories() {
+        return this.categoryInboundPort.findAllCategories();
+    }
+
+    @Get(':id')
+    async findOne(@Param('id') id: number) {
+        return this.categoryInboundPort.findOneCategory(id);
+    }
 
     @Patch(':id')
     async updateCategory(@Param('id') id: number, @Body() updateCategory: RequestUpdateCategory) {}

@@ -14,7 +14,13 @@ export class CategoryService implements CategoryInboundPort {
         return this.categoryOutboundPort.create(createCategory);
     }
 
-    async findAllCategories() {}
+    async findAllCategories() {
+        return this.categoryOutboundPort.findAllCategories();
+    }
+
+    async findOneCategory(id: number) {
+        return this.categoryOutboundPort.findOneCategory(id);
+    }
 
     async updateCategory(id: number, updateCategory: UpdateCategory) {}
 

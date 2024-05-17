@@ -14,4 +14,16 @@ export class CategoryRepository implements CategoryOutboundPort {
             },
         });
     }
+
+    async findAllCategories() {
+        return this.prisma.category.findMany();
+    }
+
+    async findOneCategory(id: number) {
+        return this.prisma.category.findUnique({
+            where: {
+                id,
+            },
+        });
+    }
 }
