@@ -83,5 +83,5 @@ EXPOSE 3000
 # Command to run the app
 #CMD ["node", "dist/main.js"]
 #CMD ["npm", "run", "start:prod"]
-CMD ["npm","run","start:debug"]
-
+#CMD ["npm","run","start:debug"]
+CMD ["node", "--max-old-space-size=4096", "dist/main.js"]
