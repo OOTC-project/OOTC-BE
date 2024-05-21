@@ -9,15 +9,8 @@ import { config } from 'aws-sdk';
 import { ValidationPipe } from '@nestjs/common';
 import { TrimPipe } from './common/pipe/trim.pipe';
 import { PrismaClientExceptionFilter } from './common/exception/prisma_client_exception.filter';
-import * as process from 'node:process';
-import * as dotenv from 'dotenv';
-import * as path from 'path';
 
 async function bootstrap() {
-    dotenv.config({
-        path: path.resolve(process.env.NODE_ENV === 'production' ? '.env' : '.env.debug'),
-    });
-
     const app = await NestFactory.create(AppModule);
 
     const configAdapter = app.get<ConfigAdapter>(CONFIG_OUTBOUND_PORT);
@@ -51,8 +44,8 @@ async function bootstrap() {
 
     const document: OpenAPIObject = SwaggerModule.createDocument(app, configBuilder);
     SwaggerModule.setup('docs', app, document);
-    await app.listen(3000, '0.0.0.0');
-    console.log(`ENV :::: ${process.env.NODE_ENV}`);
+    await app.listen(configAdapter.getConfigByKey('PORT'), '0.0.0.0');
+    console.log(`ENV :::: ${configAdapter.getConfigByKey('PORT')}`);
 }
 
 bootstrap();

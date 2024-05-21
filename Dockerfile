@@ -26,7 +26,7 @@ RUN npx prisma generate
 USER node
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 7777
 
 # Run the app using npm run start:dev for hot reloading
 CMD ["npm", "run", "start:prod"]
@@ -78,7 +78,7 @@ ENV NODE_ENV production
 USER node
 
 # Expose port 3000
-EXPOSE 3000
+EXPOSE 7777
 
 # Command to run the app
 #CMD ["node", "dist/main.js"]

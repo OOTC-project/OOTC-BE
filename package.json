@@ -21,7 +21,9 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prismaPull": "dotenv -e .env prisma db pull",
-    "prismaPull:debug": "dotenv -e .env.debug prisma db pull"
+    "prismaPull:debug": "dotenv -e .env.debug prisma db pull",
+    "prisma:debug": "dotenv -e .env.debug npx prisma generate",
+    "prisma:prod": "dotenv -e .env npx prisma generate"
   },
   "dependencies": {
     "@nestjs/cli": "^10.3.2",

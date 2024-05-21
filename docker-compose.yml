@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       target: production  # Optional: Specify target stage to build
     ports:
-      - "3000:3000"
+      - "7777:7777"
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
