@@ -66,7 +66,11 @@ export class AuthService implements AuthInboundPort {
 
     async findId(findIdData: RequestOfFind) {
         const { name, email } = findIdData;
-        return this.authOutboundPort.validateUserByName(name, email);
+        const validateUserByName = await this.authOutboundPort.validateUserByName(name, email);
+
+        if (!!_.isNil(validateUserByName)) {
+            throw new NotFoundException('이름과 이메일의 계정이 존재하지 않아요');
+        }
     }
 
     async checkValidate(requestOfFind: RequestOfFind) {

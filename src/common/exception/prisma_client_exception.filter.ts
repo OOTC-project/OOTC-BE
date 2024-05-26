@@ -25,7 +25,6 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
                     const fields = exception.meta['target'].join(', ');
                     return `해당 ${fields}을(를) 가진 사용자가 이미 존재합니다. 다른 ${fields}을(를) 선택해주세요.`;
                 }
-
                 return `${exception.meta?.target} 유니크 제약 조건이 실패했습니다.`;
             case 'P2003':
                 return `필드 ${exception.meta?.target}에 대한 외래 키 제약 조건이 실패했습니다.`;
@@ -43,6 +42,8 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
                 return '쿼리를 처리하는 동안 구문 분석 오류가 발생했습니다.';
             case 'P2010':
                 return '트랜잭션이 시간 초과로 실패했습니다.';
+            case 'P2022':
+                return '데이터베이스의 컬럼이 존재하지 않습니다.';
             default:
                 return exception.message.replace(/\n/g, '');
         }
@@ -61,6 +62,7 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
             case 'P2008':
             case 'P2009':
             case 'P2010':
+            case 'P2022':
                 return HttpStatus.INTERNAL_SERVER_ERROR;
             default:
                 return HttpStatus.INTERNAL_SERVER_ERROR;
