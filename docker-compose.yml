@@ -12,10 +12,13 @@ services:
       - /usr/src/app/node_modules
     environment:
       - NODE_ENV=production
+      - DATABASE_URL=mysql://root:cutestar12@db:3306/OOTC
     env_file:
       - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    command: sh -c "npx prisma migrate deploy && node dist/main"
 
   db:
     image: mysql:8.0
@@ -31,3 +34,11 @@ services:
       - ./db/mysql/data:/var/lib/mysql
       - ./db/mysql/config:/etc/mysql/conf.d
       - ./db/mysql/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u root -pcutestar12" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  db_data:
