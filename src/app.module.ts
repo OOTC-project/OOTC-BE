@@ -14,6 +14,9 @@ import { JwtAdapterModule } from './jwt/jwt.module';
 import * as process from 'node:process';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { CategoryModule } from './category/category.module';
+import { ClothesModule } from './clothes/clothes.module';
+import { CodyModule } from './cody/cody.module';
+import { RecommendModule } from './recommend/recommend.module';
 
 @Module({
     imports: [
@@ -27,6 +30,9 @@ import { CategoryModule } from './category/category.module';
         PassportAdapterModule,
         JwtAdapterModule,
         CategoryModule,
+        ClothesModule,
+        CodyModule,
+        RecommendModule,
     ],
     controllers: [AppController],
     providers: [
