@@ -2,8 +2,6 @@ export type RequestOfSignUp = {
     userId: string;
     password: string;
     passwordConfirm: string;
-    profileImg: string;
-    backgroundImg: string;
     name: string;
     email: string;
 };

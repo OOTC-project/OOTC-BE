@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AuthInboundPort } from '../inbound-port/auth.inbound-port';
 import { AUTH_OUTBOUND_PORT, AuthOutBoundPort } from '../outbound-port/auth.outbound-port';
-import { AWSS3Type } from '../../common/type/aws_s3.type';
 import * as bcrypt from 'bcrypt';
 import { RequestOfFind, RequestOfResetPassword, RequestOfSignIn, RequestOfSignUp, ResponseOfSignUp } from '../types/auth.types';
 import { JWT_OUTBOUND_PORT, JwtOutboundPort } from '../../jwt/outbound-port/jwt.outbound-port';
@@ -16,7 +15,7 @@ export class AuthService implements AuthInboundPort {
         private readonly jwtOutboundPort: JwtOutboundPort,
     ) {}
 
-    async signUp(userData: RequestOfSignUp, files: AWSS3Type): Promise<ResponseOfSignUp> {
+    async signUp(userData: RequestOfSignUp): Promise<ResponseOfSignUp> {
         const { password, passwordConfirm } = userData;
         if (password !== passwordConfirm) {
             throw new HttpException('Passwords do not match', HttpStatus.BAD_REQUEST);
@@ -27,7 +26,7 @@ export class AuthService implements AuthInboundPort {
             ...userData,
             password: hashedPassword,
         };
-        return await this.authOutboundPort.signUp(hashedPasswordUserData, files);
+        return await this.authOutboundPort.signUp(hashedPasswordUserData);
     }
 
     async signIn(logInData: RequestOfSignIn): Promise<{ accessToken: string }> {

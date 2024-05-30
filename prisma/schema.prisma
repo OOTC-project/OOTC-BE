@@ -14,8 +14,8 @@ model Member {
   userId        String      @unique
   email         String      @unique
   password      String
-  profileImg    String
-  backgroundImg String
+  profileImg    String?
+  backgroundImg String?
   isWithdrawal  Boolean     @default(false)
   createdAt     DateTime    @default(now())
   recommends    Recommend[]

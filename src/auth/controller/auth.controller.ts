@@ -1,14 +1,13 @@
-import { Body, Controller, Get, Inject, Post, Query, UploadedFiles } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post, Query } from '@nestjs/common';
 import { AUTH_INBOUND_PORT, AuthInboundPort } from '../inbound-port/auth.inbound-port';
 import { RequestSignupDto } from '../dtos/request_signup.dto';
-import { UploadToS3 } from '../../common/decorator';
-import { AWSS3Type } from '../../common/type/aws_s3.type';
 import { ResponseSignupDto } from '../dtos/response_signup.dto';
 import { RequestSignInDto } from '../dtos/request_signIn.dto';
 import { RequestValidateDto } from '../dtos/request_validate.dto';
 import { RequestFindDto } from '../dtos/request_findId.dto';
 import { ResponseFindIdDto } from '../dtos/response_findId.dto';
 import { RequestResetPasswordDto } from '../dtos/request_reset_password.dto';
+import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -18,9 +17,10 @@ export class AuthController {
     ) {}
 
     @Post('signUp')
-    @UploadToS3([{ name: 'profileImg' }, { name: 'backgroundImg' }])
-    async signUp(@Body() userData: RequestSignupDto, @UploadedFiles() files: AWSS3Type): Promise<ResponseSignupDto> {
-        const signUpData = await this.authInboundPort.signUp(userData, files);
+    @ApiOperation({ summary: '유저 회원가입', description: '유저 회원가입을 진행한다' })
+    @ApiCreatedResponse({ description: '회원가입 결과', type: ResponseSignupDto })
+    async signUp(@Body() userData: RequestSignupDto): Promise<ResponseSignupDto> {
+        const signUpData = await this.authInboundPort.signUp(userData);
         return new ResponseSignupDto(signUpData);
     }
 
