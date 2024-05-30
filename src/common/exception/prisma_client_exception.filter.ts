@@ -2,18 +2,24 @@ import { ArgumentsHost, Catch, HttpStatus } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { Prisma } from '@prisma/client';
 import { Response } from 'express';
+import dayjs from 'dayjs';
 
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
+        const request = ctx.getRequest<Request>();
         const message = this.formatMessage(exception);
         const status = this.getStatus(exception);
 
         response.status(status).json({
+            success: false,
             statusCode: status,
+            timeStamp: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+            path: request.url,
             message: message,
+            error: 'PrismaClientKnownRequestError',
         });
     }
 
