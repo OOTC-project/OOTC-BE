@@ -1,4 +1,4 @@
-import { RequestOfFind, RequestOfResetPassword, RequestOfSignIn, RequestOfSignUp, RequestOfValidate, ResponseOfSignUp } from '../types/auth.types';
+import { RequestOfFind, RequestOfSignIn, RequestOfSignUp, RequestOfValidate, ResponseOfSignUp } from '../types/auth.types';
 
 export const AUTH_INBOUND_PORT = 'AUTH_INBOUND_PORT' as const;
 
@@ -13,5 +13,5 @@ export interface AuthInboundPort {
 
     checkValidate(findPasswordData: RequestOfFind);
 
-    resetPassword(resetPasswordData: RequestOfResetPassword);
+    resetPassword(requestFindDto: RequestOfFind);
 }

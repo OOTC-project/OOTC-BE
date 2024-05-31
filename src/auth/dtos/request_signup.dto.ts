@@ -25,7 +25,7 @@ export class RequestSignupDto {
 
     @ApiProperty({
         description: '사용자이름',
-        example: '내이름은코난',
+        example: '이현태',
     })
     @IsNotEmpty()
     readonly name: string;

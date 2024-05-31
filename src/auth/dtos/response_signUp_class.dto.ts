@@ -16,11 +16,11 @@ export class ResponseSignUpClassDto {
     readonly name: string;
 
     @ApiProperty({
-        description: '이메일',
-        type: String,
-        example: 'wjdgusxo99@gmail.com',
+        description: '테이블 id',
+        type: Number,
+        example: 1,
     })
-    readonly email: string;
+    readonly id: number;
 
     @ApiProperty({
         description: '탈퇴여부',

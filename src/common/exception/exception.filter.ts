@@ -33,7 +33,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         }
 
         response.status(status).json({
-            success: false,
             statusCode: status,
             timeStamp: dayjs().format('YYYY-MM-DD HH:mm:ss'),
             path: request.url,

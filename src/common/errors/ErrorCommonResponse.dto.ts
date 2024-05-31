@@ -5,12 +5,6 @@ import { Expose } from 'class-transformer';
 import { EnumToArray } from '../utils/enumNumberToArray';
 
 export class ErrorCommonResponse<T> {
-    @ApiProperty({
-        description: '성공여부',
-        type: Boolean,
-    })
-    readonly success: boolean;
-
     @ApiProperty({ enum: EnumToArray(HttpStatus), description: '상태코드' })
     @Expose()
     readonly statusCode: number;

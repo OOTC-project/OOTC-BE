@@ -6,9 +6,10 @@ import { AuthRepository } from './outbound-adapter/auth.repository';
 import { AUTH_INBOUND_PORT } from './inbound-port/auth.inbound-port';
 import { PrismaModule } from '../prisma/prisma.module';
 import { JwtAdapterModule } from '../jwt/jwt.module';
+import { MailerModule } from '../mailer/mailer.module';
 
 @Module({
-    imports: [PrismaModule, JwtAdapterModule],
+    imports: [PrismaModule, JwtAdapterModule, MailerModule],
     controllers: [AuthController],
     providers: [
         {

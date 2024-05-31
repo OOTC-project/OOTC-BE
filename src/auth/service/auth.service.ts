@@ -1,10 +1,13 @@
-import { HttpException, HttpStatus, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AuthInboundPort } from '../inbound-port/auth.inbound-port';
 import { AUTH_OUTBOUND_PORT, AuthOutBoundPort } from '../outbound-port/auth.outbound-port';
 import * as bcrypt from 'bcrypt';
-import { RequestOfFind, RequestOfResetPassword, RequestOfSignIn, RequestOfSignUp, ResponseOfSignUp } from '../types/auth.types';
+import { RequestOfFind, RequestOfSignIn, RequestOfSignUp, ResponseOfSignUp } from '../types/auth.types';
 import { JWT_OUTBOUND_PORT, JwtOutboundPort } from '../../jwt/outbound-port/jwt.outbound-port';
 import _ from 'lodash';
+import { ResponseFindIdDto } from '../dtos/response_findId.dto';
+import dayjs from 'dayjs';
+import { MAILER_OUTBOUND_PORT, MailerOutboundPort } from '../../mailer/outbound-port/mailer.outbound-port';
 
 @Injectable()
 export class AuthService implements AuthInboundPort {
@@ -13,6 +16,8 @@ export class AuthService implements AuthInboundPort {
         private readonly authOutboundPort: AuthOutBoundPort,
         @Inject(JWT_OUTBOUND_PORT)
         private readonly jwtOutboundPort: JwtOutboundPort,
+        @Inject(MAILER_OUTBOUND_PORT)
+        private readonly mailerOutboundPort: MailerOutboundPort,
     ) {}
 
     async signUp(userData: RequestOfSignUp): Promise<ResponseOfSignUp> {
@@ -66,10 +71,13 @@ export class AuthService implements AuthInboundPort {
     async findId(findIdData: RequestOfFind) {
         const { name, email } = findIdData;
         const validateUserByName = await this.authOutboundPort.validateUserByName(name, email);
+        console.log('=>(auth.service.ts:69) validateUserByName', validateUserByName);
 
         if (!!_.isNil(validateUserByName)) {
             throw new NotFoundException('이름과 이메일의 계정이 존재하지 않아요');
         }
+
+        return new ResponseFindIdDto(validateUserByName);
     }
 
     async checkValidate(requestOfFind: RequestOfFind) {
@@ -78,14 +86,32 @@ export class AuthService implements AuthInboundPort {
         if (!_.size(validateResult)) {
             throw new NotFoundException('해당 정보의 아이디가 없슴둥');
         }
-        return validateResult;
+        return { result: true };
     }
 
-    async resetPassword(resetPasswordData: RequestOfResetPassword) {
-        const { password, id } = resetPasswordData;
+    async resetPassword(requestOfFind: RequestOfFind) {
+        const { userId, name, email } = requestOfFind;
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const findMemberDataByRequest = await this.authOutboundPort.checkValidate(userId, email, name);
 
-        return this.authOutboundPort.resetPassword(id, hashedPassword);
+        if (_.size(findMemberDataByRequest) <= 0) {
+            throw new NotFoundException('해당 계정의 정보가 없습니다');
+        }
+
+        const { id } = findMemberDataByRequest;
+
+        const resetPassword = dayjs().unix().toString();
+
+        const resetHashedPassword = await bcrypt.hash(resetPassword, 10);
+
+        await this.mailerOutboundPort.sendEmailOfResetPassword(email, resetPassword);
+
+        const resetPasswordResult = await this.authOutboundPort.resetPassword(id, resetHashedPassword);
+
+        if (_.size(resetPasswordResult) <= 0) {
+            throw new BadRequestException('비밀번호 초기화 실패');
+        }
+
+        return { result: true };
     }
 }

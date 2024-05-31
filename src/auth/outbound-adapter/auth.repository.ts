@@ -40,10 +40,10 @@ export class AuthRepository implements AuthOutBoundPort {
         });
     }
 
-    async resetPassword(id: number, hashedPassword: string) {
+    async resetPassword(id: number, resetPassword: string) {
         return this.prisma.member.update({
             where: { id },
-            data: { password: hashedPassword },
+            data: { password: resetPassword },
         });
     }
 }

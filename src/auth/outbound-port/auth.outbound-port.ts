@@ -11,5 +11,5 @@ export interface AuthOutBoundPort {
 
     checkValidate(userId: string, email: string, name: string);
 
-    resetPassword(id: number, hashedPassword: string);
+    resetPassword(id: number, resetPassword: string);
 }

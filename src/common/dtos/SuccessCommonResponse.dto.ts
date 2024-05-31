@@ -11,7 +11,7 @@ export class SuccessCommonResponseDto<T> {
 
     @ApiProperty({ type: String, description: '성공여부 - OK | ERROR' })
     @Expose()
-    readonly success: string;
+    readonly message: string;
 
     @ApiProperty({
         type: 'generic',

@@ -11,7 +11,7 @@ export class RequestFindDto {
 
     @ApiProperty({
         description: '이메일',
-        example: 'ganadara12@gmail.com',
+        example: 'wjdgusxo99@gmail.com',
     })
     readonly email: string;
 
