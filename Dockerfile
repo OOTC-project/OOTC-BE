@@ -67,4 +67,5 @@ ENV NODE_ENV production
 EXPOSE 7777
 
 # Command to run the app
-CMD ["node", "--max-old-space-size=4096", "dist/main.js"]
+#CMD ["node", "--max-old-space-size=4096", "dist/main.js"]
+CMD ["npm", "run","start:prod"]
