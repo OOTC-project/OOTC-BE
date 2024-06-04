@@ -1,9 +1,11 @@
+version: '3.8'
+
 services:
   api:
     build:
       context: .
       dockerfile: Dockerfile
-      target: production  # Optional: Specify target stage to build
+      target: production
     ports:
       - "7777:7777"
     volumes:
@@ -17,7 +19,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: sh -c "npx prisma migrate deploy && node dist/main"
+    command: sh -c "npx prisma migrate deploy && node dist/main.js"
 
   db:
     image: mysql:8.0

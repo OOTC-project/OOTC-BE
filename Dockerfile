@@ -1,29 +1,30 @@
 ###################
-# BUILD FOR LOCAL DEVELOPMENT
+# BASE IMAGE
 ###################
 
-FROM node:20-alpine AS development
+FROM node:20-alpine AS base
 
-# Create app directory
+# Set working directory
 WORKDIR /usr/src/app
 
-# Install app dependencies by copying package.json and package-lock.json
-COPY --chown=node:node package*.json ./
-
-# Install all dependencies, including devDependencies
+# Install dependencies
+COPY package*.json ./
 RUN npm ci
+
+# Copy local code to the container image
+COPY . .
+
+###################
+# BUILD FOR DEVELOPMENT
+###################
+
+FROM base AS development
 
 # If the Nest CLI is not part of your package.json, install it globally
 RUN npm install -g @nestjs/cli
 
-# Copy local code to the container image
-COPY --chown=node:node . .
-
 # Generate Prisma client
 RUN npx prisma generate
-
-# Switch to user 'node' for security
-USER node
 
 # Expose the port the app runs on
 EXPOSE 7777
@@ -35,29 +36,13 @@ CMD ["npm", "run", "start:dev"]
 # BUILD FOR PRODUCTION
 ###################
 
-FROM node:20-alpine AS build
-
-# Set working directory
-WORKDIR /usr/src/app
-
-# Copying necessary files
-COPY --chown=node:node package*.json ./
-COPY --chown=node:node . .
-
-# Install dependencies including 'devDependencies'
-RUN npm ci
+FROM base AS build
 
 # Build the project
 RUN NODE_OPTIONS=--max-old-space-size=4096 npm run build
 
 # Remove development dependencies
 RUN npm ci --only=production
-
-# Set environment to production
-ENV NODE_ENV production
-
-# Use 'node' user
-USER node
 
 ###################
 # PRODUCTION
@@ -69,14 +54,11 @@ FROM node:20-alpine AS production
 WORKDIR /usr/src/app
 
 # Copying from build stage
-COPY --from=build --chown=node:node /usr/src/app/node_modules ./node_modules
-COPY --from=build --chown=node:node /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/dist ./dist
 
 # Set environment to production
 ENV NODE_ENV production
-
-# Use 'node' user
-USER node
 
 # Expose port 7777
 EXPOSE 7777
