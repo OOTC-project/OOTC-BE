@@ -38,6 +38,9 @@ CMD ["npm", "run", "start:dev"]
 
 FROM base AS build
 
+# Generate Prisma client
+RUN npx prisma generate
+
 # Build the project
 RUN NODE_OPTIONS=--max-old-space-size=4096 npm run build
 
