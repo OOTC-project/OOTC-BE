@@ -66,6 +66,9 @@ ENV NODE_ENV production
 # Expose port 7777
 EXPOSE 7777
 
+# Add ls command to inspect the files and check for dist directory
+RUN ls -l /usr/src/app || { echo '/usr/src/app directory does not exist'; exit 1; }
+RUN ls -l /usr/src/app/dist && echo 'dist directory exists' || { echo 'dist directory does not exist'; exit 1; }
+
 # Command to run the app
-#CMD ["node", "--max-old-space-size=4096", "dist/main.js"]
-CMD ["npm", "run","start:prod"]
+CMD ["node", "--max-old-space-size=4096", "dist/main.js"]
