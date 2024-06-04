@@ -22,7 +22,11 @@ export class CategoryService implements CategoryInboundPort {
         return this.categoryOutboundPort.findOneCategory(id);
     }
 
-    async updateCategory(id: number, updateCategory: UpdateCategory) {}
+    async updateCategory(id: number, updateCategory: UpdateCategory) {
+        return this.categoryOutboundPort.updateCategory(id, updateCategory);
+    }
 
-    async deleteCategory(id: number) {}
+    async deleteCategory(id: number) {
+        return this.categoryOutboundPort.deleteCategory(id);
+    }
 }

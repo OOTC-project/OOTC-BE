@@ -26,8 +26,12 @@ export class CategoryController {
     }
 
     @Patch(':id')
-    async updateCategory(@Param('id') id: number, @Body() updateCategory: RequestUpdateCategory) {}
+    async updateCategory(@Param('id') id: number, @Body() updateCategory: RequestUpdateCategory) {
+        return this.categoryInboundPort.updateCategory(id, updateCategory);
+    }
 
     @Delete(':id')
-    async deleteCategory(@Param('id') id: number) {}
+    async deleteCategory(@Param('id') id: number) {
+        return this.categoryInboundPort.deleteCategory(id);
+    }
 }
