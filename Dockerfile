@@ -29,7 +29,7 @@ USER node
 EXPOSE 7777
 
 # Run the app using npm run start:dev for hot reloading
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start:dev"]
 
 ###################
 # BUILD FOR PRODUCTION
@@ -82,7 +82,4 @@ USER node
 EXPOSE 7777
 
 # Command to run the app
-#CMD ["node", "dist/main.js"]
-#CMD ["npm", "run", "start:prod"]
-#CMD ["npm","run","start:debug"]
 CMD ["node", "--max-old-space-size=4096", "dist/main.js"]
