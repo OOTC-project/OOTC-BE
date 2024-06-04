@@ -9,13 +9,19 @@ export class ClothesService implements ClothesInboundPort {
         private readonly clothesOutboundPort: ClothesOutboundPort,
     ) {}
 
-    async create(createClothes) {}
+    async create(createClothes, files) {
+        return this.clothesOutboundPort.create(createClothes, files);
+    }
 
-    async findAll() {}
+    async findOne(id: number) {
+        return this.clothesOutboundPort.findOne(id);
+    }
 
-    async findOne(id: number) {}
+    async update(id: number, updateClothes, files) {
+        return this.clothesOutboundPort.update(id, updateClothes, files);
+    }
 
-    async update(id: number, updateClothes) {}
-
-    async remove(id: number) {}
+    async remove(id: number) {
+        return this.clothesOutboundPort.remove(id);
+    }
 }

@@ -1,13 +1,11 @@
 export const CLOTHES_INBOUND_PORT = 'CLOTHES_INBOUND_PORT' as const;
 
 export interface ClothesInboundPort {
-    create(createClothes);
-
-    findAll();
+    create(createClothes, files);
 
     findOne(id: number);
 
-    update(id: number, updateClothes);
+    update(id: number, updateClothes, files);
 
     remove(id: number);
 }
