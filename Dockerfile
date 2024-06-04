@@ -44,6 +44,10 @@ RUN npx prisma generate
 # Build the project
 RUN NODE_OPTIONS=--max-old-space-size=4096 npm run build
 
+# Log directory content after build
+RUN echo "Listing /usr/src/app after build:" && ls -l /usr/src/app
+RUN echo "Listing /usr/src/app/dist after build:" && ls -l /usr/src/app/dist
+
 # Remove development dependencies
 RUN npm ci --only=production
 
@@ -59,6 +63,10 @@ WORKDIR /usr/src/app
 # Copying from build stage
 COPY --from=build /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/dist ./dist
+
+# Log directory content before running the app
+RUN echo "Listing /usr/src/app before running the app:" && ls -l /usr/src/app
+RUN echo "Listing /usr/src/app/dist before running the app:" && ls -l /usr/src/app/dist
 
 # Set environment to production
 ENV NODE_ENV production
