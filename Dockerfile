@@ -41,11 +41,11 @@ FROM node:20-alpine AS build
 WORKDIR /usr/src/app
 
 # Copying necessary files
+COPY --chown=node:node package*.json ./
 COPY --chown=node:node . .
 
 # Install dependencies including 'devDependencies'
 RUN npm ci
-
 
 # Build the project
 RUN NODE_OPTIONS=--max-old-space-size=4096 npm run build
@@ -78,7 +78,7 @@ ENV NODE_ENV production
 # Use 'node' user
 USER node
 
-# Expose port 3000
+# Expose port 7777
 EXPOSE 7777
 
 # Command to run the app
