@@ -19,6 +19,8 @@ model Member {
   isWithdrawal  Boolean     @default(false)
   createdAt     DateTime    @default(now())
   recommends    Recommend[]
+  Cody          Cody[]
+  Clothes       Clothes[]
 }
 
 model Recommend {
@@ -39,6 +41,10 @@ model Cody {
   createdAt   DateTime      @default(now())
   codyClothes CodyClothes[]
   recommends  Recommend[]
+  fkMemberId  Int
+  member      Member        @relation(fields: [fkMemberId], references: [id])
+
+  @@index([fkMemberId], map: "Cody_fkMemberId_fkey")
 }
 
 model CodyClothes {
@@ -60,9 +66,11 @@ model Clothes {
   description  String
   position     String
   fkCategoryId Int
+  fkMemberId   Int
   createdAt    DateTime      @default(now())
   category     Category      @relation(fields: [fkCategoryId], references: [id])
   codyClothes  CodyClothes[]
+  member       Member        @relation(fields: [fkMemberId], references: [id])
 
   @@index([fkCategoryId], map: "Clothes_fkCategoryId_fkey")
 }
