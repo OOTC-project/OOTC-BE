@@ -73,6 +73,7 @@ model Clothes {
   member       Member        @relation(fields: [fkMemberId], references: [id])
 
   @@index([fkCategoryId], map: "Clothes_fkCategoryId_fkey")
+  @@index([fkMemberId], map: "Clothes_fkMemberId_fkey")
 }
 
 model Category {
