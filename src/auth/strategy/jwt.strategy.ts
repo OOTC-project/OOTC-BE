@@ -3,15 +3,18 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { CONFIG_OUTBOUND_PORT } from '../../config/outbound-port/config.outbound-port';
 import { ConfigAdapter } from '../../config/outbound-adapter/config.adapter';
-import { AUTH_INBOUND_PORT, AuthInboundPort } from '../inbound-port/auth.inbound-port';
+import { JWT_OUTBOUND_PORT, JwtOutboundPort } from '../../jwt/outbound-port/jwt.outbound-port';
+import { AUTH_OUTBOUND_PORT, AuthOutBoundPort } from '../outbound-port/auth.outbound-port';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
         @Inject(CONFIG_OUTBOUND_PORT)
         private readonly configAdapter: ConfigAdapter,
-        @Inject(AUTH_INBOUND_PORT)
-        private readonly authInboundPort: AuthInboundPort,
+        @Inject(AUTH_OUTBOUND_PORT)
+        private readonly authOutboundPort: AuthOutBoundPort,
+        @Inject(JWT_OUTBOUND_PORT)
+        private readonly jwtOutboundPort: JwtOutboundPort,
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -21,8 +24,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: any) {
-        const userId = payload.sub;
-        const user = await this.authInboundPort.validateUser(userId);
+        const token = payload.accessToken;
+        const verifiedPayload = await this.jwtOutboundPort.verify(token);
+        const user = await this.authOutboundPort.validateUser(verifiedPayload.userId);
         if (!user) {
             throw new UnauthorizedException('Unauthorized access');
         }

@@ -47,7 +47,7 @@ export class AuthService implements AuthInboundPort {
             throw new UnauthorizedException('아이디 비밀번호를 확인해주세요!');
         }
 
-        const payload = { sub: user.id, username: user.name };
+        const payload = { sub: user.id, username: user.name, userId: user.userId };
         const accessToken = this.jwtOutboundPort.sign(payload);
 
         return { accessToken };
