@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { RequestCreateCategory } from '../dto/request_create_category.dto';
 import { RequestUpdateCategory } from '../dto/request_update_category.dto';
 import { CATEGORY_INBOUND_PORT, CategoryInboundPort } from '../inbound-port/category.inbound-port';
 import { JwtGuard } from '../../auth/guard/jwt.guard';
+import { request } from 'express';
 
 @Controller('category')
 export class CategoryController {
@@ -19,8 +20,8 @@ export class CategoryController {
 
     @Get()
     @UseGuards(JwtGuard)
-    async findAllCategories() {
-        return this.categoryInboundPort.findAllCategories();
+    async findAllCategories(@Req() { user } = request) {
+        return this.categoryInboundPort.findAllCategories(user);
     }
 
     @Get(':id')
