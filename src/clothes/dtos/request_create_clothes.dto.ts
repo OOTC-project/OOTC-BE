@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class RequestCreateClothesDto {
     @ApiProperty({
@@ -34,5 +35,6 @@ export class RequestCreateClothesDto {
         type: Number,
     })
     @IsNotEmpty()
+    @Transform(({ value }) => (value ? Number(value) : null))
     readonly fkCategoryId: number;
 }

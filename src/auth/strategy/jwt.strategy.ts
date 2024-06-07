@@ -25,11 +25,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     async validate(payload: any) {
         const token = payload.accessToken;
-        console.log('=>(jwt.strategy.ts:28) token', token);
         const verifiedPayload = await this.jwtOutboundPort.verify(token);
-        console.log('=>(jwt.strategy.ts:30) verifiedPayload', verifiedPayload);
         const user = await this.authOutboundPort.validateUser(verifiedPayload.userId);
-        console.log('=>(jwt.strategy.ts:32) user', user);
         if (!user) {
             throw new UnauthorizedException('Unauthorized access');
         }
