@@ -4,8 +4,10 @@ import { CodyService } from './service/cody.service';
 import { CODY_INBOUND_PORT } from './inbound-port/cody.inbound-port';
 import { CODY_OUTBOUND_PORT } from './outbound-port/cody.outbound-port';
 import { CodyRepository } from './outbound-adapter/cody.repository';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
+    imports: [PrismaModule],
     controllers: [CodyController],
     providers: [
         {

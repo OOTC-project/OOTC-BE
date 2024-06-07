@@ -1,13 +1,15 @@
+import { RequestCreateCody } from '../types/cody.type';
+
 export const CODY_INBOUND_PORT = 'CODY_INBOUND_PORT' as const;
 
 export interface CodyInboundPort {
-    create();
+    create(user, createCody: RequestCreateCody);
 
-    findAll();
+    findAll(user);
 
-    findOne();
+    findOne(id: number);
 
-    update();
+    update(id: number, updateCody);
 
-    delete();
+    delete(id: number);
 }
