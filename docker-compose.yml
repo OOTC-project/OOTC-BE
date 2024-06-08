@@ -6,9 +6,6 @@ services:
       target: production
     ports:
       - "7777:7777"
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     environment:
       - NODE_ENV=production
       - DATABASE_URL=mysql://root:cutestar12@db:3306/OOTC
