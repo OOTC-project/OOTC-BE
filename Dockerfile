@@ -38,6 +38,9 @@ CMD ["npm", "run", "start:dev"]
 
 FROM base AS build
 
+# Copy Prisma schema
+COPY prisma ./prisma
+
 # Generate Prisma client
 RUN npx prisma generate
 
@@ -63,6 +66,7 @@ WORKDIR /usr/src/app
 # Copying from build stage
 COPY --from=build /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/prisma ./prisma
 
 # Log directory content before running the app
 RUN echo "Listing /usr/src/app before running the app:" && ls -l /usr/src/app
