@@ -53,22 +53,22 @@ export class CodyRepository implements CodyOutboundPort {
         });
     }
 
-    async update(id: number, updateCody) {
-        return this.prisma.codyClothes.update({
-            where: {
-                cody: {
-                    id,
-                },
-            },
-            data: {
-                cody: {
-                    name: updateCody.name,
-                },
-            },
-            include: {
-                cody: true,
-                clothes: true,
-            },
-        });
-    }
+    // async update(id: number, updateCody) {
+    //     return this.prisma.codyClothes.update({
+    //         where: {
+    //             cody: {
+    //                 id,
+    //             },
+    //         },
+    //         data: {
+    //             cody: {
+    //                 name: updateCody.name,
+    //             },
+    //         },
+    //         include: {
+    //             cody: true,
+    //             clothes: true,
+    //         },
+    //     });
+    // }
 }

@@ -22,9 +22,9 @@ export class CodyService implements CodyInboundPort {
         return this.codyOutboundPort.findOne(id);
     }
 
-    async update(id: number, updateCody) {
-        return this.codyOutboundPort.update(id, updateCody);
-    }
+    // async update(id: number, updateCody) {
+    //     return this.codyOutboundPort.update(id, updateCody);
+    // }
 
     async delete(id: number) {}
 }

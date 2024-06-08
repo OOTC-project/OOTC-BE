@@ -28,11 +28,11 @@ export class CodyController {
         return this.codyInboundPort.findOne(id);
     }
 
-    @Patch('/:id')
-    @UseGuards(JwtGuard)
-    async update(@Param('id') id: number, @Body() updateCody) {
-        return this.codyInboundPort.update(id, updateCody);
-    }
+    // @Patch('/:id')
+    // @UseGuards(JwtGuard)
+    // async update(@Param('id') id: number, @Body() updateCody) {
+    //     return this.codyInboundPort.update(id, updateCody);
+    // }
 
     @Delete('/:id')
     @UseGuards(JwtGuard)

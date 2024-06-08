@@ -9,7 +9,7 @@ export interface CodyInboundPort {
 
     findOne(id: number);
 
-    update(id: number, updateCody);
+    // update(id: number, updateCody);
 
     delete(id: number);
 }

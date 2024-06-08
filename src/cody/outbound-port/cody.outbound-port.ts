@@ -9,5 +9,5 @@ export interface CodyOutboundPort {
 
     findOne(id: number);
 
-    update(id: number, updateCody);
+    // update(id: number, updateCody);
 }
