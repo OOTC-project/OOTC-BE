@@ -93,6 +93,12 @@ export class CodyRepository implements CodyOutboundPort {
             },
         });
 
+        await this.prisma.recommend.deleteMany({
+            where: {
+                fkCodyId: id,
+            },
+        });
+
         return this.prisma.cody.delete({
             where: {
                 id,
