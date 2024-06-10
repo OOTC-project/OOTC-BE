@@ -1,8 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ClothesInboundPort } from '../inbound-port/clothes.inbound-port';
 import { CLOTHES_OUTBOUND_PORT, ClothesOutboundPort } from '../outbound-port/clothes.outbound-port';
 import { ResponseClothesFindOneDto } from '../dtos/response_clothes_find_one.dto';
 import { CONFIG_OUTBOUND_PORT, ConfigOutboundPort } from '../../config/outbound-port/config.outbound-port';
+import _ from 'lodash';
 
 @Injectable()
 export class ClothesService implements ClothesInboundPort {
@@ -19,7 +20,13 @@ export class ClothesService implements ClothesInboundPort {
 
     async findOne(id: number) {
         const findOneClothesById = await this.clothesOutboundPort.findOne(id);
+
+        if (!!_.isNil(findOneClothesById)) {
+            throw new BadRequestException('null', '해당 id의 clothes가 없습니다.');
+        }
+        console.log('=>(clothes.service.ts:22) findOneClothesById', findOneClothesById);
         const imagePrefix = this.configOutboundPort.getConfigByKey('AWS_IMAGE_PREFIX');
+        console.log('=>(clothes.service.ts:24) imagePrefix', imagePrefix);
         return new ResponseClothesFindOneDto(findOneClothesById, imagePrefix);
     }
 

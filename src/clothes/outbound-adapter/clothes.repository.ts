@@ -20,7 +20,7 @@ export class ClothesRepository implements ClothesOutboundPort {
     }
 
     async findOne(id: number) {
-        return this.prisma.clothes.findUnique({
+        return this.prisma.clothes.findFirst({
             where: {
                 id,
             },

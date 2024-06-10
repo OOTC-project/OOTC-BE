@@ -30,7 +30,6 @@ export class ClothesController {
     @UseGuards(JwtGuard)
     @UploadToS3([{ name: 'clothesImg' }])
     async update(@Param('id') id: number, @Body() updateClothes, @UploadedFiles() files: AWSS3Type) {
-        console.log('=>(clothes.controller.ts:33) files', files);
         return this.clothesInboundPort.update(id, updateClothes, files);
     }
 

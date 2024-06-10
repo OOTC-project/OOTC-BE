@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CodyOutboundPort } from '../outbound-port/cody.outbound-port';
 import { PrismaService } from '../../prisma/prisma.service';
 import _ from 'lodash';
+import { RequestUpdateCodyDto } from '../dtos/request_update_cody.dto';
 
 @Injectable()
 export class CodyRepository implements CodyOutboundPort {
@@ -53,22 +54,49 @@ export class CodyRepository implements CodyOutboundPort {
         });
     }
 
-    // async update(id: number, updateCody) {
-    //     return this.prisma.codyClothes.update({
-    //         where: {
-    //             cody: {
-    //                 id,
-    //             },
-    //         },
-    //         data: {
-    //             cody: {
-    //                 name: updateCody.name,
-    //             },
-    //         },
-    //         include: {
-    //             cody: true,
-    //             clothes: true,
-    //         },
-    //     });
-    // }
+    async update(id: number, updateCody: RequestUpdateCodyDto) {
+        // 코디 이름 업데이트
+        await this.prisma.cody.update({
+            where: { id },
+            data: { name: updateCody.name },
+        });
+
+        // 기존의 CodyClothes 삭제
+        await this.prisma.codyClothes.deleteMany({
+            where: { fkCodyId: id },
+        });
+
+        // 새로운 CodyClothes 추가
+        const newCodyClothes = updateCody.clothes.map((clothesId) => ({
+            fkCodyId: id,
+            fkClothesId: clothesId,
+        }));
+        await this.prisma.codyClothes.createMany({
+            data: newCodyClothes,
+        });
+
+        // 업데이트된 코디 반환
+        return this.prisma.cody.findUnique({
+            where: { id },
+            include: {
+                codyClothes: {
+                    include: { clothes: true },
+                },
+            },
+        });
+    }
+
+    async delete(id: number) {
+        await this.prisma.codyClothes.deleteMany({
+            where: {
+                fkCodyId: id,
+            },
+        });
+
+        return this.prisma.cody.delete({
+            where: {
+                id,
+            },
+        });
+    }
 }

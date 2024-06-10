@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CodyInboundPort } from '../inbound-port/cody.inbound-port';
 import { CODY_OUTBOUND_PORT, CodyOutboundPort } from '../outbound-port/cody.outbound-port';
 import { RequestCreateCodyDto } from '../dtos/request_create_cody.dto';
+import { RequestUpdateCodyDto } from '../dtos/request_update_cody.dto';
 
 @Injectable()
 export class CodyService implements CodyInboundPort {
@@ -22,9 +23,11 @@ export class CodyService implements CodyInboundPort {
         return this.codyOutboundPort.findOne(id);
     }
 
-    // async update(id: number, updateCody) {
-    //     return this.codyOutboundPort.update(id, updateCody);
-    // }
+    async update(id: number, updateCody: RequestUpdateCodyDto) {
+        return this.codyOutboundPort.update(id, updateCody);
+    }
 
-    async delete(id: number) {}
+    async delete(id: number) {
+        return this.codyOutboundPort.delete(id);
+    }
 }
