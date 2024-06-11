@@ -1,4 +1,4 @@
-import { ResponseOfSignUp } from '../types/auth.types';
+import { ResponseOfMemberType } from '../types/auth.types';
 
 export class ResponseSignupDto {
     id: number;
@@ -7,7 +7,7 @@ export class ResponseSignupDto {
     isWithdrawal: boolean;
     createdAt: string | Date;
 
-    constructor(responseOfSignIn: ResponseOfSignUp) {
+    constructor(responseOfSignIn: ResponseOfMemberType) {
         this.id = responseOfSignIn.id;
         this.name = responseOfSignIn.name;
         this.userId = responseOfSignIn.userId;

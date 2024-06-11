@@ -1,15 +1,16 @@
-import { RequestOfSignUp, ResponseOfSignUp } from '../types/auth.types';
+import { RequestOfSignUp } from '../types/auth.types';
+import { Member } from '@prisma/client';
 
 export const AUTH_OUTBOUND_PORT = 'AUTH_OUTBOUND_PORT' as const;
 
 export interface AuthOutBoundPort {
-    signUp(userData: RequestOfSignUp): Promise<ResponseOfSignUp>;
+    signUp(userData: RequestOfSignUp): Promise<Member>;
 
-    validateUser(userid: string);
+    validateUser(userid: string): Promise<Member>;
 
-    validateUserByName(name: string, email: string);
+    validateUserByName(name: string, email: string): Promise<Member>;
 
-    checkValidate(userId: string, email: string, name: string);
+    checkValidate(userId: string, email: string, name: string): Promise<Member>;
 
-    resetPassword(id: number, resetPassword: string);
+    resetPassword(id: number, resetPassword: string): Promise<Member>;
 }

@@ -7,5 +7,5 @@ export class ResponseSignInClassDto {
         example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExL...',
         type: String,
     })
-    private readonly accessToken: string;
+    readonly accessToken: string;
 }

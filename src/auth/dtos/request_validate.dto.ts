@@ -8,4 +8,10 @@ export class RequestValidateDto {
         example: 'cutestar',
     })
     readonly userId: string;
+
+    @ApiProperty({
+        description: '회원 비밀번호',
+        example: '1234567',
+    })
+    readonly password?: string;
 }

@@ -29,7 +29,7 @@ export type RequestOfResetPassword = {
 
 // response
 
-export type ResponseOfSignUp = {
+export type ResponseOfMemberType = {
     id: number;
     name: string;
     userId: string;
@@ -41,6 +41,18 @@ export type ResponseOfSignUp = {
     createdAt: string | Date;
 };
 
+export type ResponseOfSignIn = {
+    accessToken: string;
+};
+
 export type ResponseOfFindId = {
+    userId: string;
+};
+
+// ETC
+
+export type JwtPayload = {
+    sub: number;
+    username: string;
     userId: string;
 };

@@ -2,12 +2,16 @@ import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, Not
 import { AuthInboundPort } from '../inbound-port/auth.inbound-port';
 import { AUTH_OUTBOUND_PORT, AuthOutBoundPort } from '../outbound-port/auth.outbound-port';
 import * as bcrypt from 'bcrypt';
-import { RequestOfFind, RequestOfSignIn, RequestOfSignUp, ResponseOfSignUp } from '../types/auth.types';
+import { JwtPayload, RequestOfSignIn, RequestOfSignUp } from '../types/auth.types';
 import { JWT_OUTBOUND_PORT, JwtOutboundPort } from '../../jwt/outbound-port/jwt.outbound-port';
 import _ from 'lodash';
-import { ResponseFindIdDto } from '../dtos/response_findId.dto';
 import dayjs from 'dayjs';
 import { MAILER_OUTBOUND_PORT, MailerOutboundPort } from '../../mailer/outbound-port/mailer.outbound-port';
+import { Member } from '@prisma/client';
+import { ResponseSignInClassDto } from '../dtos/response_signIn_class.dto';
+import { RequestValidateDto } from '../dtos/request_validate.dto';
+import { RequestFindDto } from '../dtos/request_findId.dto';
+import { ResponseBooleanDto } from '../dtos/response_check_validate_class.dto';
 
 @Injectable()
 export class AuthService implements AuthInboundPort {
@@ -20,7 +24,7 @@ export class AuthService implements AuthInboundPort {
         private readonly mailerOutboundPort: MailerOutboundPort,
     ) {}
 
-    async signUp(userData: RequestOfSignUp): Promise<ResponseOfSignUp> {
+    async signUp(userData: RequestOfSignUp): Promise<Member> {
         const { password, passwordConfirm } = userData;
         if (password !== passwordConfirm) {
             throw new HttpException('Passwords do not match', HttpStatus.BAD_REQUEST);
@@ -34,7 +38,7 @@ export class AuthService implements AuthInboundPort {
         return await this.authOutboundPort.signUp(hashedPasswordUserData);
     }
 
-    async signIn(logInData: RequestOfSignIn): Promise<{ accessToken: string }> {
+    async signIn(logInData: RequestOfSignIn): Promise<ResponseSignInClassDto> {
         const { userId, password } = logInData;
         const user = await this.authOutboundPort.validateUser(userId);
 
@@ -47,17 +51,21 @@ export class AuthService implements AuthInboundPort {
             throw new UnauthorizedException('아이디 비밀번호를 확인해주세요!');
         }
 
-        const payload = { sub: user.id, username: user.name, userId: user.userId };
-        const accessToken = this.jwtOutboundPort.sign(payload);
+        const payload: JwtPayload = {
+            sub: user.id,
+            username: user.name,
+            userId: user.userId,
+        };
+        const accessToken: string = this.jwtOutboundPort.sign(payload);
 
         return { accessToken };
     }
 
-    async validateUser(userData: RequestOfSignIn) {
+    async validateUser(userData: RequestValidateDto): Promise<Member> {
         const { userId, password } = userData;
 
-        const findMemberByUserId = await this.authOutboundPort.validateUser(userId);
-        if (findMemberByUserId.length === 0) {
+        const findMemberByUserId: Member = await this.authOutboundPort.validateUser(userId);
+        if (_.size(findMemberByUserId) === 0) {
             throw new UnauthorizedException('해당 계정이 없습니다');
         }
 
@@ -68,19 +76,18 @@ export class AuthService implements AuthInboundPort {
         return findMemberByUserId;
     }
 
-    async findId(findIdData: RequestOfFind) {
+    async findId(findIdData: RequestFindDto): Promise<Member> {
         const { name, email } = findIdData;
         const validateUserByName = await this.authOutboundPort.validateUserByName(name, email);
-        console.log('=>(auth.service.ts:69) validateUserByName', validateUserByName);
 
         if (!!_.isNil(validateUserByName)) {
             throw new NotFoundException('이름과 이메일의 계정이 존재하지 않아요');
         }
 
-        return new ResponseFindIdDto(validateUserByName);
+        return validateUserByName;
     }
 
-    async checkValidate(requestOfFind: RequestOfFind) {
+    async checkValidate(requestOfFind: RequestFindDto): Promise<ResponseBooleanDto> {
         const { userId, email, name } = requestOfFind;
         const validateResult = await this.authOutboundPort.checkValidate(userId, email, name);
         if (!_.size(validateResult)) {
@@ -89,10 +96,10 @@ export class AuthService implements AuthInboundPort {
         return { result: true };
     }
 
-    async resetPassword(requestOfFind: RequestOfFind) {
+    async resetPassword(requestOfFind: RequestFindDto): Promise<ResponseBooleanDto> {
         const { userId, name, email } = requestOfFind;
 
-        const findMemberDataByRequest = await this.authOutboundPort.checkValidate(userId, email, name);
+        const findMemberDataByRequest: Member = await this.authOutboundPort.checkValidate(userId, email, name);
 
         if (_.size(findMemberDataByRequest) <= 0) {
             throw new NotFoundException('해당 계정의 정보가 없습니다');
@@ -100,13 +107,13 @@ export class AuthService implements AuthInboundPort {
 
         const { id } = findMemberDataByRequest;
 
-        const resetPassword = dayjs().unix().toString();
+        const resetPassword: string = dayjs().unix().toString();
 
-        const resetHashedPassword = await bcrypt.hash(resetPassword, 10);
+        const resetHashedPassword: string = await bcrypt.hash(resetPassword, 10);
 
         await this.mailerOutboundPort.sendEmailOfResetPassword(email, resetPassword);
 
-        const resetPasswordResult = await this.authOutboundPort.resetPassword(id, resetHashedPassword);
+        const resetPasswordResult: Member = await this.authOutboundPort.resetPassword(id, resetHashedPassword);
 
         if (_.size(resetPasswordResult) <= 0) {
             throw new BadRequestException('비밀번호 초기화 실패');

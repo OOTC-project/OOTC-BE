@@ -4,6 +4,7 @@ import { RequestUpdateCategory } from '../dto/request_update_category.dto';
 import { CATEGORY_INBOUND_PORT, CategoryInboundPort } from '../inbound-port/category.inbound-port';
 import { JwtGuard } from '../../auth/guard/jwt.guard';
 import { request } from 'express';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('category')
 export class CategoryController {
@@ -14,6 +15,10 @@ export class CategoryController {
 
     @Post()
     @UseGuards(JwtGuard)
+    @ApiOperation({
+        summary: '카테고리를 만든다',
+        description: '카테고리를 만든다',
+    })
     async create(@Body() createCategory: RequestCreateCategory) {
         return this.categoryInboundPort.create(createCategory);
     }

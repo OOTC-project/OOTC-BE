@@ -3,7 +3,6 @@ import { AUTH_INBOUND_PORT, AuthInboundPort } from '../inbound-port/auth.inbound
 import { RequestSignupDto } from '../dtos/request_signup.dto';
 import { ResponseSignupDto } from '../dtos/response_signup.dto';
 import { RequestSignInDto } from '../dtos/request_signIn.dto';
-import { RequestValidateDto } from '../dtos/request_validate.dto';
 import { RequestFindDto } from '../dtos/request_findId.dto';
 import { ResponseFindIdDto } from '../dtos/response_findId.dto';
 import { ApiBody, ApiExcludeEndpoint, ApiOperation } from '@nestjs/swagger';
@@ -13,6 +12,9 @@ import { SimpleErrorResponse } from '../../common/decorator/ErrorResponse.decora
 import { ResponseSignInClassDto } from '../dtos/response_signIn_class.dto';
 import { ResponseFindIdClassDto } from '../dtos/response_findId_class.dto';
 import { ResponseBooleanDto } from '../dtos/response_check_validate_class.dto';
+import { ResponseOfMemberType } from '../types/auth.types';
+import { RequestValidateDto } from '../dtos/request_validate.dto';
+import { Member } from '@prisma/client';
 
 @Controller('auth')
 export class AuthController {
@@ -48,7 +50,7 @@ export class AuthController {
         },
     ])
     async signUp(@Body() userData: RequestSignupDto): Promise<ResponseSignupDto> {
-        const signUpData = await this.authInboundPort.signUp(userData);
+        const signUpData: ResponseOfMemberType = await this.authInboundPort.signUp(userData);
         return new ResponseSignupDto(signUpData);
     }
 
@@ -76,7 +78,7 @@ export class AuthController {
 
     @Post('validate')
     @ApiExcludeEndpoint()
-    async validate(@Body() validateData: RequestValidateDto) {
+    async validate(@Body() validateData: RequestValidateDto): Promise<Member> {
         return await this.authInboundPort.validateUser(validateData);
     }
 
@@ -98,7 +100,9 @@ export class AuthController {
         },
     ])
     async findId(@Query() findIdData: RequestFindDto): Promise<ResponseFindIdDto> {
-        return await this.authInboundPort.findId(findIdData);
+        const validateUserByName = await this.authInboundPort.findId(findIdData);
+
+        return new ResponseFindIdDto(validateUserByName);
     }
 
     @Get('check/validate')
@@ -118,7 +122,7 @@ export class AuthController {
             model: NotFoundException,
         },
     ])
-    async checkValidate(@Query() findPasswordData: RequestFindDto): Promise<boolean> {
+    async checkValidate(@Query() findPasswordData: RequestFindDto): Promise<ResponseBooleanDto> {
         return await this.authInboundPort.checkValidate(findPasswordData);
     }
 
@@ -142,7 +146,7 @@ export class AuthController {
             model: NotFoundException,
         },
     ])
-    async resetPassword(@Body() requestFindDto: RequestFindDto) {
+    async resetPassword(@Body() requestFindDto: RequestFindDto): Promise<ResponseBooleanDto> {
         return this.authInboundPort.resetPassword(requestFindDto);
     }
 }
