@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { AuthOutBoundPort } from '../outbound-port/auth.outbound-port';
 import { PrismaService } from '../../prisma/prisma.service';
-import { RequestOfSignUp } from '../types/auth.types';
 import { Member } from '@prisma/client';
+import { RequestSignupDto } from '../dtos/request_signup.dto';
 
 @Injectable()
 export class AuthRepository implements AuthOutBoundPort {
     constructor(private readonly prisma: PrismaService) {}
 
-    async signUp(userData: RequestOfSignUp): Promise<Member> {
+    async signUp(userData: RequestSignupDto): Promise<Member> {
         const { userId, password, name, email } = userData;
 
         return this.prisma.member.create({

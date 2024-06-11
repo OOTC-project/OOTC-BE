@@ -12,7 +12,6 @@ import { SimpleErrorResponse } from '../../common/decorator/ErrorResponse.decora
 import { ResponseSignInClassDto } from '../dtos/response_signIn_class.dto';
 import { ResponseFindIdClassDto } from '../dtos/response_findId_class.dto';
 import { ResponseBooleanDto } from '../dtos/response_check_validate_class.dto';
-import { ResponseOfMemberType } from '../types/auth.types';
 import { RequestValidateDto } from '../dtos/request_validate.dto';
 import { Member } from '@prisma/client';
 
@@ -50,7 +49,7 @@ export class AuthController {
         },
     ])
     async signUp(@Body() userData: RequestSignupDto): Promise<ResponseSignupDto> {
-        const signUpData: ResponseOfMemberType = await this.authInboundPort.signUp(userData);
+        const signUpData: ResponseSignupDto = await this.authInboundPort.signUp(userData);
         return new ResponseSignupDto(signUpData);
     }
 

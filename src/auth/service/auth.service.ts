@@ -2,7 +2,7 @@ import { BadRequestException, HttpException, HttpStatus, Inject, Injectable, Not
 import { AuthInboundPort } from '../inbound-port/auth.inbound-port';
 import { AUTH_OUTBOUND_PORT, AuthOutBoundPort } from '../outbound-port/auth.outbound-port';
 import * as bcrypt from 'bcrypt';
-import { JwtPayload, RequestOfSignIn, RequestOfSignUp } from '../types/auth.types';
+import { JwtPayload } from '../types/auth.types';
 import { JWT_OUTBOUND_PORT, JwtOutboundPort } from '../../jwt/outbound-port/jwt.outbound-port';
 import _ from 'lodash';
 import dayjs from 'dayjs';
@@ -12,6 +12,8 @@ import { ResponseSignInClassDto } from '../dtos/response_signIn_class.dto';
 import { RequestValidateDto } from '../dtos/request_validate.dto';
 import { RequestFindDto } from '../dtos/request_findId.dto';
 import { ResponseBooleanDto } from '../dtos/response_check_validate_class.dto';
+import { RequestSignupDto } from '../dtos/request_signup.dto';
+import { RequestSignInDto } from '../dtos/request_signIn.dto';
 
 @Injectable()
 export class AuthService implements AuthInboundPort {
@@ -24,7 +26,7 @@ export class AuthService implements AuthInboundPort {
         private readonly mailerOutboundPort: MailerOutboundPort,
     ) {}
 
-    async signUp(userData: RequestOfSignUp): Promise<Member> {
+    async signUp(userData: RequestSignupDto): Promise<Member> {
         const { password, passwordConfirm } = userData;
         if (password !== passwordConfirm) {
             throw new HttpException('Passwords do not match', HttpStatus.BAD_REQUEST);
@@ -38,7 +40,7 @@ export class AuthService implements AuthInboundPort {
         return await this.authOutboundPort.signUp(hashedPasswordUserData);
     }
 
-    async signIn(logInData: RequestOfSignIn): Promise<ResponseSignInClassDto> {
+    async signIn(logInData: RequestSignInDto): Promise<ResponseSignInClassDto> {
         const { userId, password } = logInData;
         const user = await this.authOutboundPort.validateUser(userId);
 
