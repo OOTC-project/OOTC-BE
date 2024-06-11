@@ -9,7 +9,7 @@ import { ResponseFindIdDto } from '../dtos/response_findId.dto';
 import { ApiBody, ApiExcludeEndpoint, ApiOperation } from '@nestjs/swagger';
 import { SuccessResponse } from '../../common/decorator/SuccessResponse.decorator';
 import { ResponseSignUpClassDto } from '../dtos/response_signUp_class.dto';
-import { ErrorResponse } from '../../common/decorator/ErrorResponse.decorator';
+import { SimpleErrorResponse } from '../../common/decorator/ErrorResponse.decorator';
 import { ResponseSignInClassDto } from '../dtos/response_signIn_class.dto';
 import { ResponseFindIdClassDto } from '../dtos/response_findId_class.dto';
 import { ResponseBooleanDto } from '../dtos/response_check_validate_class.dto';
@@ -31,7 +31,7 @@ export class AuthController {
             exampleTitle: '회원가입 완료',
         },
     ])
-    @ErrorResponse(HttpStatus.CONFLICT, [
+    @SimpleErrorResponse(HttpStatus.CONFLICT, [
         {
             model: ConflictException,
             exampleDescription: '이미 겹치는 값이 있을때',
@@ -39,7 +39,7 @@ export class AuthController {
             message: 'Member_userId_key 유니크 제약 조건이 실패했습니다.',
         },
     ])
-    @ErrorResponse(HttpStatus.BAD_REQUEST, [
+    @SimpleErrorResponse(HttpStatus.BAD_REQUEST, [
         {
             model: BadRequestException,
             exampleTitle: '비밀번호와 비밀번호 확인이 안맞을때',
@@ -62,7 +62,7 @@ export class AuthController {
             exampleTitle: '로그인성공',
         },
     ])
-    @ErrorResponse(HttpStatus.BAD_REQUEST, [
+    @SimpleErrorResponse(HttpStatus.BAD_REQUEST, [
         {
             model: BadRequestException,
             exampleDescription: '아이디 혹은 비밀번호가 틀린경우',
@@ -89,7 +89,7 @@ export class AuthController {
             exampleTitle: '아이디 찾기 성공',
         },
     ])
-    @ErrorResponse(HttpStatus.NOT_FOUND, [
+    @SimpleErrorResponse(HttpStatus.NOT_FOUND, [
         {
             exampleDescription: '아이디 찾기 실패',
             exampleTitle: '정보에 대한 계정이 없음',
@@ -110,7 +110,7 @@ export class AuthController {
             model: ResponseBooleanDto,
         },
     ])
-    @ErrorResponse(HttpStatus.NOT_FOUND, [
+    @SimpleErrorResponse(HttpStatus.NOT_FOUND, [
         {
             exampleDescription: '해당 정보의 계정이 없는경우',
             exampleTitle: '해당 정보 계정 없음',
@@ -134,7 +134,7 @@ export class AuthController {
             exampleDescription: '비밀번호 초기화 응답 결과 - 비밀번호는 회원가입한 메일로 전송된다',
         },
     ])
-    @ErrorResponse(HttpStatus.NOT_FOUND, [
+    @SimpleErrorResponse(HttpStatus.NOT_FOUND, [
         {
             exampleDescription: '해당 정보의 계정이 없는경우',
             exampleTitle: '해당 정보 계정 없음',
