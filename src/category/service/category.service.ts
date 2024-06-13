@@ -1,7 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CategoryInboundPort } from '../inbound-port/category.inbound-port';
 import { CATEGORY_OUTBOUND_PORT, CategoryOutboundPort } from '../outbound-port/category.outbound-port';
-import { CreateCategory, UpdateCategory } from '../types/category.type';
+import { UpdateCategory } from '../types/category.type';
+import { RequestCreateCategory } from '../dto/request_create_category.dto';
+import { Category, Member } from '@prisma/client';
 
 @Injectable()
 export class CategoryService implements CategoryInboundPort {
@@ -10,11 +12,11 @@ export class CategoryService implements CategoryInboundPort {
         private readonly categoryOutboundPort: CategoryOutboundPort,
     ) {}
 
-    async create(createCategory: CreateCategory) {
+    async create(createCategory: RequestCreateCategory): Promise<Category> {
         return this.categoryOutboundPort.create(createCategory);
     }
 
-    async findAllCategories(user) {
+    async findAllCategories(user: Member): Promise<Category[]> {
         return this.categoryOutboundPort.findAllCategories(user);
     }
 

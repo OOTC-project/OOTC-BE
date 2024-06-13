@@ -1,11 +1,13 @@
-import { CreateCategory, UpdateCategory } from '../types/category.type';
+import { UpdateCategory } from '../types/category.type';
+import { RequestCreateCategory } from '../dto/request_create_category.dto';
+import { Category } from '@prisma/client';
 
 export const CATEGORY_OUTBOUND_PORT = 'CATEGORY_OUTBOUND_PORT' as const;
 
 export interface CategoryOutboundPort {
-    create(createCategory: CreateCategory);
+    create(createCategory: RequestCreateCategory): Promise<Category>;
 
-    findAllCategories(user);
+    findAllCategories(user): Promise<Category[]>;
 
     findOneCategory(id: number);
 

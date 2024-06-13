@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CategoryOutboundPort } from '../outbound-port/category.outbound-port';
-import { CreateCategory, UpdateCategory } from '../types/category.type';
+import { UpdateCategory } from '../types/category.type';
 import { PrismaService } from '../../prisma/prisma.service';
+import { Category, Member } from '@prisma/client';
+import { RequestCreateCategory } from '../dto/request_create_category.dto';
 
 @Injectable()
 export class CategoryRepository implements CategoryOutboundPort {
     constructor(private readonly prisma: PrismaService) {}
 
-    async create(createCategory: CreateCategory) {
+    async create(createCategory: RequestCreateCategory): Promise<Category> {
         return this.prisma.category.create({
             data: {
                 name: createCategory.name,
@@ -15,7 +17,7 @@ export class CategoryRepository implements CategoryOutboundPort {
         });
     }
 
-    async findAllCategories(user) {
+    async findAllCategories(user: Member): Promise<Category[]> {
         return this.prisma.category.findMany({
             include: {
                 clothes: {
