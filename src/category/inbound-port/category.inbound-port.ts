@@ -9,9 +9,7 @@ export interface CategoryInboundPort {
 
     findAllCategories(user: Member): Promise<Category[]>;
 
-    findOneCategory(id: number);
+    updateCategory(id: number, updateCategory: UpdateCategory): Promise<Category>;
 
-    updateCategory(id: number, updateCategory: UpdateCategory);
-
-    deleteCategory(id: number);
+    deleteCategory(id: number): Promise<Category>;
 }

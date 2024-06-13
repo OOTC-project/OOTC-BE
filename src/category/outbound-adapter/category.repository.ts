@@ -29,15 +29,7 @@ export class CategoryRepository implements CategoryOutboundPort {
         });
     }
 
-    async findOneCategory(id: number) {
-        return this.prisma.category.findUnique({
-            where: {
-                id,
-            },
-        });
-    }
-
-    async updateCategory(id: number, updateCategory: UpdateCategory) {
+    async updateCategory(id: number, updateCategory: UpdateCategory): Promise<Category> {
         return this.prisma.category.update({
             where: {
                 id,
@@ -48,7 +40,7 @@ export class CategoryRepository implements CategoryOutboundPort {
         });
     }
 
-    async deleteCategory(id: number) {
+    async deleteCategory(id: number): Promise<Category> {
         return this.prisma.category.delete({
             where: {
                 id,

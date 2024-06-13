@@ -8,6 +8,8 @@ import { Category } from '@prisma/client';
 import { SuccessResponse } from '../../common/decorator/SuccessResponse.decorator';
 import { ResponseCreateCategoryDto } from '../dto/response_create_category.dto';
 import { ResponseFindAllCategoryDto } from '../dto/response_findAll_category.dto';
+import { ResponseUpdateCategoryDto } from '../dto/response_update_category.dto';
+import { ResponseDeleteCategoryDto } from '../dto/response_delete_category.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -35,6 +37,10 @@ export class CategoryController {
 
     @Get()
     @UseGuards(JwtGuard)
+    @ApiOperation({
+        summary: '카테고리를 전체조회',
+        description: '카테고리와 카테고리에 해당하는 옷까지 전체 조회한다',
+    })
     @SuccessResponse(HttpStatus.OK, [
         {
             model: ResponseFindAllCategoryDto,
@@ -46,21 +52,37 @@ export class CategoryController {
         return await this.categoryInboundPort.findAllCategories(user);
     }
 
-    @Get(':id')
-    @UseGuards(JwtGuard)
-    async findOne(@Param('id') id: number) {
-        return this.categoryInboundPort.findOneCategory(id);
-    }
-
     @Patch(':id')
     @UseGuards(JwtGuard)
-    async updateCategory(@Param('id') id: number, @Body() updateCategory: RequestUpdateCategory) {
+    @ApiOperation({
+        summary: '카테고리를 수정한다',
+        description: '카테고리를 이름을 수정한다',
+    })
+    @SuccessResponse(HttpStatus.OK, [
+        {
+            model: ResponseUpdateCategoryDto,
+            exampleTitle: '카테고리 수정 성공',
+            exampleDescription: '카테고리 수정 성공',
+        },
+    ])
+    async updateCategory(@Param('id') id: number, @Body() updateCategory: RequestUpdateCategory): Promise<Category> {
         return this.categoryInboundPort.updateCategory(id, updateCategory);
     }
 
     @Delete(':id')
     @UseGuards(JwtGuard)
-    async deleteCategory(@Param('id') id: number) {
+    @ApiOperation({
+        summary: '카테고리를 삭제한다',
+        description: '카테고리를 삭제한다',
+    })
+    @SuccessResponse(HttpStatus.OK, [
+        {
+            model: ResponseDeleteCategoryDto,
+            exampleTitle: '카테고리 삭제 성공',
+            exampleDescription: '카테고리 삭제 성공',
+        },
+    ])
+    async deleteCategory(@Param('id') id: number): Promise<Category> {
         return this.categoryInboundPort.deleteCategory(id);
     }
 }
