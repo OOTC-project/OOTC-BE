@@ -1,12 +1,15 @@
 import { ClothesOutboundPort } from '../outbound-port/clothes.outbound-port';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { Clothes, Member } from '@prisma/client';
+import { RequestCreateClothes } from '../interface/clothes.interface';
+import { AWSS3Type } from '../../common/interface/base_column.interface';
 
 @Injectable()
 export class ClothesRepository implements ClothesOutboundPort {
     constructor(private readonly prisma: PrismaService) {}
 
-    async create(createClothes, files, user) {
+    async create(createClothes: RequestCreateClothes, files: AWSS3Type, user: Member): Promise<Clothes> {
         return this.prisma.clothes.create({
             data: {
                 fkMemberId: user.id,
