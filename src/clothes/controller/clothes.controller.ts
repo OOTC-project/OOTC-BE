@@ -44,6 +44,17 @@ export class ClothesController {
 
     @Get('/:id')
     @UseGuards(JwtGuard)
+    @ApiOperation({
+        summary: '옷을 상세조회한다',
+        description: '옷을 상세조회한다',
+    })
+    @SuccessResponse(HttpStatus.OK, [
+        {
+            model: ResponseClothesFindOneDto,
+            exampleTitle: '옷 상세조회성공!',
+            exampleDescription: '옷을 상세 조회해버려 버렸지 뭐야',
+        },
+    ])
     async findOne(@Param('id') id: number): Promise<ResponseClothesFindOneDto> {
         const findOneClothesById: Clothes = await this.clothesInboundPort.findOne(id);
 
@@ -54,6 +65,17 @@ export class ClothesController {
     @Patch('/:id')
     @UseGuards(JwtGuard)
     @UploadToS3([{ name: 'clothesImg' }])
+    @ApiOperation({
+        summary: '옷을 수정한다',
+        description: '옷을 수정한다',
+    })
+    @SuccessResponse(HttpStatus.OK, [
+        {
+            model: ResponseClothesFindOneDto,
+            exampleTitle: '옷 업데이트 성공!',
+            exampleDescription: '옷을 업데이트해버려 버렸지 뭐야',
+        },
+    ])
     async update(@Param('id') id: number, @Body() updateClothes: RequestUpdateClothesDto, @UploadedFiles() files: AWSS3Type): Promise<ResponseClothesFindOneDto> {
         const findOneClothesById = await this.clothesInboundPort.update(id, updateClothes, files);
 
@@ -63,6 +85,17 @@ export class ClothesController {
 
     @Delete('/:id')
     @UseGuards(JwtGuard)
+    @ApiOperation({
+        summary: '옷을 삭제한다',
+        description: '옷을 삭제한다',
+    })
+    @SuccessResponse(HttpStatus.OK, [
+        {
+            model: ResponseClothesFindOneDto,
+            exampleTitle: '옷 삭제 성공!',
+            exampleDescription: '옷을 삭제해버려 버렸지 뭐야',
+        },
+    ])
     async remove(@Param('id') id: number) {
         return this.clothesInboundPort.remove(id);
     }
