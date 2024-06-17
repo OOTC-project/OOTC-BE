@@ -17,6 +17,7 @@ import { CategoryModule } from './category/category.module';
 import { ClothesModule } from './clothes/clothes.module';
 import { CodyModule } from './cody/cody.module';
 import { RecommendModule } from './recommend/recommend.module';
+import { OpenAiModule } from './open-ai/open-ai.module';
 
 @Module({
     imports: [
@@ -33,6 +34,7 @@ import { RecommendModule } from './recommend/recommend.module';
         ClothesModule,
         CodyModule,
         RecommendModule,
+        OpenAiModule,
     ],
     controllers: [AppController],
     providers: [
