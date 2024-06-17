@@ -51,7 +51,7 @@ export class CodyController {
             },
         },
     ])
-    async create(@Req() { user }, @Body() createCody: RequestCreateCodyDto) {
+    async create(@Req() { user }, @Body() createCody: RequestCreateCodyDto): Promise<ResponseCreateCodyDto> {
         return this.codyInboundPort.create(user, createCody);
     }
 
@@ -112,7 +112,7 @@ export class CodyController {
             ],
         },
     ])
-    async findAll(@Req() { user }) {
+    async findAll(@Req() { user }): Promise<ResponseFindAllCodyListDto> {
         return this.codyInboundPort.findAll(user);
     }
 
@@ -148,7 +148,7 @@ export class CodyController {
             },
         },
     ])
-    async findOne(@Param('id') id: number) {
+    async findOne(@Param('id') id: number): Promise<ResponseFindOneCodyDto> {
         return this.codyInboundPort.findOne(id);
     }
 
@@ -185,7 +185,7 @@ export class CodyController {
             },
         },
     ])
-    async update(@Param('id') id: number, @Body() updateCody: RequestUpdateCodyDto) {
+    async update(@Param('id') id: number, @Body() updateCody: RequestUpdateCodyDto): Promise<ResponseUpdateCodyDto> {
         return this.codyInboundPort.update(id, updateCody);
     }
 
@@ -221,7 +221,7 @@ export class CodyController {
             },
         },
     ])
-    async delete(@Param('id', ParseIntPipe) id: number) {
+    async delete(@Param('id', ParseIntPipe) id: number): Promise<ResponseDeleteCodyDto> {
         return this.codyInboundPort.delete(id);
     }
 }

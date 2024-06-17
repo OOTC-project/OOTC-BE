@@ -3,19 +3,21 @@ import { CodyOutboundPort } from '../outbound-port/cody.outbound-port';
 import { PrismaService } from '../../prisma/prisma.service';
 import _ from 'lodash';
 import { RequestUpdateCodyDto } from '../dtos/request_update_cody.dto';
+import { Cody, Member } from '@prisma/client';
+import { RequestCreateCodyDto } from '../dtos/request_create_cody.dto';
+import { CodyWithDetails } from '../types/cody.type';
 
 @Injectable()
 export class CodyRepository implements CodyOutboundPort {
     constructor(private readonly prisma: PrismaService) {}
 
-    async create(user, createCody) {
+    async create(user: Member, createCody: RequestCreateCodyDto): Promise<CodyWithDetails> {
         const createdCody = await this.prisma.cody.create({
             data: {
                 name: createCody.name,
                 fkMemberId: user.id,
             },
         });
-        console.log('=>(cody.repository.ts:18) createdCody', createdCody);
         const dataForCreateCodyClothes = _.map(createCody.clothes, (clothesId) => {
             return {
                 fkCodyId: createdCody.id,
@@ -39,10 +41,10 @@ export class CodyRepository implements CodyOutboundPort {
                 clothes: true,
                 cody: true,
             },
-        });
+        }) as unknown as CodyWithDetails;
     }
 
-    async findAll(user) {
+    async findAll(user: Member): Promise<CodyWithDetails[]> {
         return this.prisma.codyClothes.findMany({
             include: {
                 cody: true,
@@ -53,10 +55,10 @@ export class CodyRepository implements CodyOutboundPort {
                     fkMemberId: user.id,
                 },
             },
-        });
+        }) as unknown as CodyWithDetails[];
     }
 
-    async findOne(id: number) {
+    async findOne(id: number): Promise<CodyWithDetails | null> {
         return this.prisma.codyClothes.findFirst({
             where: {
                 cody: {
@@ -67,10 +69,10 @@ export class CodyRepository implements CodyOutboundPort {
                 cody: true,
                 clothes: true,
             },
-        });
+        }) as unknown as CodyWithDetails | null;
     }
 
-    async update(id: number, updateCody: RequestUpdateCodyDto) {
+    async update(id: number, updateCody: RequestUpdateCodyDto): Promise<CodyWithDetails> {
         // 코디 이름 업데이트
         await this.prisma.cody.update({
             where: { id },
@@ -99,10 +101,10 @@ export class CodyRepository implements CodyOutboundPort {
                     include: { clothes: true },
                 },
             },
-        });
+        }) as unknown as CodyWithDetails;
     }
 
-    async delete(id: number) {
+    async delete(id: number): Promise<Cody> {
         await this.prisma.codyClothes.deleteMany({
             where: {
                 fkCodyId: id,

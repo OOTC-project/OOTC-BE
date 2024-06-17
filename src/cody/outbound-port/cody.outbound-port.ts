@@ -1,16 +1,17 @@
-import { RequestCreateCody } from '../types/cody.type';
+import { CodyWithDetails, RequestCreateCody } from '../types/cody.type';
+import { Cody, Member } from '@prisma/client';
 import { RequestUpdateCodyDto } from '../dtos/request_update_cody.dto';
 
 export const CODY_OUTBOUND_PORT = 'CODY_OUTBOUND_PORT' as const;
 
 export interface CodyOutboundPort {
-    create(user, createCody: RequestCreateCody);
+    create(user: Member, createCody: RequestCreateCody): Promise<CodyWithDetails>;
 
-    findAll(user);
+    findAll(user: Member): Promise<CodyWithDetails[]>;
 
-    findOne(id: number);
+    findOne(id: number): Promise<CodyWithDetails | null>;
 
-    update(id: number, updateCody: RequestUpdateCodyDto);
+    update(id: number, updateCody: RequestUpdateCodyDto): Promise<CodyWithDetails>;
 
-    delete(id: number);
+    delete(id: number): Promise<Cody>;
 }
