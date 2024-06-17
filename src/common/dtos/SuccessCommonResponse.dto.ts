@@ -7,11 +7,11 @@ import { EnumToArray } from '../utils/enumNumberToArray';
 export class SuccessCommonResponseDto<T> {
     @ApiProperty({ enum: EnumToArray(HttpStatus), description: '상태코드' })
     @Expose()
-    readonly statusCode: number;
+    statusCode: number;
 
     @ApiProperty({ type: String, description: '성공여부 - OK | ERROR' })
     @Expose()
-    readonly message: string;
+    message: string;
 
     @ApiProperty({
         type: 'generic',

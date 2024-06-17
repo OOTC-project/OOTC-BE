@@ -12,6 +12,17 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
                 },
             },
         });
+
+        this.testConnection();
+    }
+
+    async testConnection(): Promise<void> {
+        try {
+            await this.$connect();
+            console.log('Database connection successful');
+        } catch (e) {
+            console.error('Database connection error:', e);
+        }
     }
 
     async onModuleInit(): Promise<void> {

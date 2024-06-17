@@ -15,6 +15,7 @@ export class CodyRepository implements CodyOutboundPort {
                 fkMemberId: user.id,
             },
         });
+        console.log('=>(cody.repository.ts:18) createdCody', createdCody);
         const dataForCreateCodyClothes = _.map(createCody.clothes, (clothesId) => {
             return {
                 fkCodyId: createdCody.id,
@@ -23,6 +24,21 @@ export class CodyRepository implements CodyOutboundPort {
         });
         await this.prisma.codyClothes.createMany({
             data: dataForCreateCodyClothes,
+        });
+
+        return this.prisma.codyClothes.findFirst({
+            where: {
+                clothes: {
+                    fkMemberId: user.id,
+                },
+                cody: {
+                    id: createdCody.id,
+                },
+            },
+            include: {
+                clothes: true,
+                cody: true,
+            },
         });
     }
 

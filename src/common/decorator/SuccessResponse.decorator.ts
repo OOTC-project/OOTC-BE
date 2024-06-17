@@ -36,78 +36,41 @@ interface SuccessResponseOption {
  * 여러 응답값을 손쉽게 적기위한 데토레이터 입니다
  * 기본적으로 status 코드가 같으면 하나밖에 못적기때문에 example을 추가하기위해서 커스텀 하였습니다.
  * @param StatusCode 응답 코드입니다. HttpStatus enum 값을 사용하시면됩니다.
- * @param errorResponseOptions SuccessResponseOption[] 같은 코드에 여러 example을 추가하기위한 옵션입니다.
+ * @param successResponseOptions
  * @returns
  */
-export const SuccessResponse = (StatusCode: HttpStatus, succesResponseOptions: SuccessResponseOption[]) => {
-    const examples = succesResponseOptions
-        .map((response: SuccessResponseOption) => {
-            // base CommonResponse 를 만듭니다.
-            const commonResponseInstance = makeInstanceByApiProperty<SuccessCommonResponseDto<any>>(SuccessCommonResponseDto);
+export const SuccessResponse = (StatusCode: HttpStatus, successResponseOptions: SuccessResponseOption[]) => {
+    const examples = successResponseOptions.reduce((acc, response) => {
+        const commonResponseInstance = new SuccessCommonResponseDto();
+        commonResponseInstance.statusCode = StatusCode;
+        commonResponseInstance.message = '성공여부 - OK';
+        const DtoModel = response.model;
+        const dtoData = makeInstanceByApiProperty<typeof DtoModel>(DtoModel, response.generic);
 
-            const DtoModel = response.model;
+        commonResponseInstance.data = response.overwriteValue ? mergeObjects({}, dtoData, response.overwriteValue) : dtoData;
 
-            // dto 객체를 만든다. 제네릭은 옵셔널 한 값이라 없으면 없는대로 만든다.
-            const dtoData = makeInstanceByApiProperty<typeof DtoModel>(DtoModel, response.generic);
-            // overWriteValue가 있으면 오버라이트
-            // 정보를 좀더 커스텀 할 수있다.
-            if (response.overwriteValue) {
-                commonResponseInstance.data = mergeObjects({}, dtoData, response.overwriteValue);
-            } else {
-                commonResponseInstance.data = dtoData;
-            }
+        acc[response.exampleTitle] = {
+            value: commonResponseInstance,
+            description: response.exampleDescription,
+        };
 
-            // 예시 정보를 만든다 ( 스웨거의 examplse)
-            return {
-                [response.exampleTitle]: {
-                    value: commonResponseInstance,
-                    description: response.exampleDescription,
-                },
-            };
-        })
-        .reduce(function (result, item) {
-            Object.assign(result, item);
-            return result;
-        }, {}); // null 값 있을경우 필터링
+        return acc;
+    }, {});
 
-    // 스키마를 정의 내리기 위한 함수들
-    const extraModel = succesResponseOptions.map((e) => {
-        return e.model;
-    }) as unknown as Type[];
-    // 중복값 제거
-    const setOfExtraModel = new Set(extraModel);
-    // $ref 추가
-    const pathsOfDto = [...setOfExtraModel].map((e) => {
-        return { $ref: getSchemaPath(e) };
-    });
-    // 제네릭 관련
-    const extraGeneric = succesResponseOptions
-        .map((e) => {
-            return e.generic;
-        })
-        .filter((e) => e) as unknown as Type[];
-    const pathsOfGeneric = extraGeneric.map((e) => {
-        return { $ref: getSchemaPath(e) };
-    });
+    const extraModels = new Set(successResponseOptions.map((e) => e.model)) as Set<Type<any>>;
+    const extraGenerics = new Set(successResponseOptions.map((e) => e.generic).filter(Boolean)) as Set<Type<any>>;
 
-    // 데코레이터를 만든다.
     return applyDecorators(
-        // $ref를 사용하기 위해선 extraModel 로 등록 시켜야한다.
-        ApiExtraModels(...extraModel, ...extraGeneric, SuccessCommonResponseDto),
+        ApiExtraModels(...extraModels, ...extraGenerics, SuccessCommonResponseDto),
         ApiResponse({
             status: StatusCode,
             content: {
                 'application/json': {
                     schema: {
-                        // 베이스 스키마
-                        additionalProperties: {
-                            $ref: getSchemaPath(SuccessCommonResponseDto),
-                        },
-                        // dto 스키마들
-                        oneOf: [...pathsOfDto, ...pathsOfGeneric],
+                        additionalProperties: { $ref: getSchemaPath(SuccessCommonResponseDto) },
+                        oneOf: [...extraModels, ...extraGenerics].map((e) => ({ $ref: getSchemaPath(e) })),
                     },
-                    // 예시값
-                    examples: examples,
+                    examples,
                 },
             },
         }),
