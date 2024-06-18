@@ -9,7 +9,7 @@ export class OpenAiController {
     ) {}
 
     @Get()
-    async getWeather(@Query('city') city: string) {
-        return this.openAiInboundPort.getWeather(city);
+    async recommendLook(@Query() { city, country }) {
+        return this.openAiInboundPort.recommendLook({ city, country });
     }
 }
