@@ -4,6 +4,8 @@ import { lastValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { CONFIG_OUTBOUND_PORT, ConfigOutboundPort } from '../../config/outbound-port/config.outbound-port';
 import OpenAI from 'openai';
+import { ChatCompletion } from 'openai/resources';
+import Choice = ChatCompletion.Choice;
 
 @Injectable()
 export class OpenAiAdapter implements OpenAiOutboundPort {
@@ -13,7 +15,7 @@ export class OpenAiAdapter implements OpenAiOutboundPort {
         private configAdapter: ConfigOutboundPort,
     ) {}
 
-    async recommendLook({ city, country }) {
+    async recommendLook({ city, country }): Promise<Choice> {
         const openai = new OpenAI({
             apiKey: this.configAdapter.getConfigByKey('OPEN_AI_API_KEY'),
         });

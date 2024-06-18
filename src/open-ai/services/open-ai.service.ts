@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { OpenAiInboundPort } from '../inbound-port/open-ai.inbound-port';
 import { CONFIG_OUTBOUND_PORT, ConfigOutboundPort } from '../../config/outbound-port/config.outbound-port';
 import { OPENAI_OUTBOUND_PORT, OpenAiOutboundPort } from '../outbound-port/open-ai.outbound-port';
+import { ChatCompletion } from 'openai/resources';
+import Choice = ChatCompletion.Choice;
 
 @Injectable()
 export class OpenAiService implements OpenAiInboundPort {
@@ -12,7 +14,7 @@ export class OpenAiService implements OpenAiInboundPort {
         private readonly openAiOutboundPort: OpenAiOutboundPort,
     ) {}
 
-    async recommendLook({ city, country }) {
+    async recommendLook({ city, country }): Promise<Choice> {
         return this.openAiOutboundPort.recommendLook({ city, country });
     }
 }
