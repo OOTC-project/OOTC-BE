@@ -15,60 +15,57 @@
 <a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
 <a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
 <a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+<a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+<a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+<a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## OOTC (Outfit of the Closet)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+OOTC is a project designed to help you register and locate your clothes easily, allowing you to quickly find your clothes and create outfit combinations using the data of clothes you own.
 
-## Installation
+## Project Overview
 
-```bash
-$ npm install
-```
+### Development Staff
+- **Jeong Gwan-hoon** (Frontend Developer)
+- **Hyuntae Lee** (Backend Developer)
 
-## Running the app
+### Development Period
+- **Start Date:** April 2024
+- **Status:** In Progress
 
-```bash
-# development
-$ npm run start
+### Main Features
+1. **Sign Up**
+2. **Login**
+3. **Today’s Clothing Recommendation**: Get outfit suggestions based on the current weather.
+4. **Clothes CRUD**: Create, Read, Update, and Delete information about your clothes.
+5. **Cody CRUD**: Manage your outfit combinations.
+6. **Coordination Recommendation**: Get outfit coordination recommendations based on your wardrobe data.
 
-# watch mode
-$ npm run start:dev
+→ Additional features will be added in version 2.
 
-# production mode
-$ npm run start:prod
-```
+## Development Stack
 
-## Test
+| Category | Technology Stack |
+| -------- | ----------------- |
+| **BackEnd** | Nest.js, Prisma |
+| **DataBase** | MySQL |
+| **Infra** | AWS EC2, Docker, Route 53, ELB |
+| **Tool** | Slack, Postman, Swagger |
 
-```bash
-# unit tests
-$ npm run test
+## Getting Started
 
-# e2e tests
-$ npm run test:e2e
+To get a copy of the project up and running on your local machine for development and testing purposes, follow these steps.
 
-# test coverage
-$ npm run test:cov
-```
+### Prerequisites
 
-## Support
+- Node.js
+- Docker
+- MySQL
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Installation
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
-# OOTC-BE
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/ootc.git
+   cd ootc
