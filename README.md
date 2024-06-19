@@ -36,3 +36,15 @@ OOTC는 옷의 정보를 사전에 등록하여 쉽게 찾을 수 있게 하고,
 
 ![image](https://github.com/OOTC-project/OOTC-BE/assets/50650892/91f6a51f-7745-44cc-a326-90a3ab2e6965)
 
+
+### 도전과제
+
+1. Prisma ORM 사용
+2. Docker compose 와 AWS를 사용하여 기본적인 배포 관련 경험
+3. 헥사고날 아키텍처로 코드 작성
+4. 추후 개발 계획
+    1. 테스트 코드 작성
+    2. CI/CD 적용 ( 진행중 )
+    3. 소셜 로그인 구현
+    4. session 방식 로그인 구현
+
