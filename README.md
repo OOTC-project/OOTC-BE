@@ -1,49 +1,33 @@
 ## OOTC (Outfit of the Closet)
 
-OOTC is a project designed to help you register and locate your clothes easily, allowing you to quickly find your clothes and create outfit combinations using the data of clothes you own.
+OOTC는 옷의 정보를 사전에 등록하여 쉽게 찾을 수 있게 하고, 소유하고 있는 옷의 데이터를 이용하여 코디를 설정하고 검색할 수 있도록 도와주는 프로젝트입니다.
 
-## Project Overview
+## 프로젝트 개요
 
-### Development Staff
-- **Jeong Gwan-hoon** (Frontend Developer)
-- **Hyuntae Lee** (Backend Developer)
+### 개발 인원
+- **정관훈** (프론트엔드 개발자)
+- **이현태** (백엔드 개발자)
 
-### Development Period
-- **Start Date:** April 2024
-- **Status:** In Progress
+### 개발 기간
+- **시작일:** 2024년 4월
+- **상태:** 진행 중
 
-### Main Features
-1. **Sign Up**
-2. **Login**
-3. **Today’s Clothing Recommendation**: Get outfit suggestions based on the current weather.
-4. **Clothes CRUD**: Create, Read, Update, and Delete information about your clothes.
-5. **Cody CRUD**: Manage your outfit combinations.
-6. **Coordination Recommendation**: Get outfit coordination recommendations based on your wardrobe data.
+### 주요 기능
+1. **회원가입**
+2. **로그인**
+3. **오늘의 옷 추천**: 현재 날씨에 따라 옷을 추천받습니다.
+4. **옷 CRUD**: 옷의 정보를 생성, 조회, 수정, 삭제합니다.
+5. **코디 CRUD**: 코디를 관리합니다.
+6. **코디 추천**: 옷장 데이터를 기반으로 코디를 추천받습니다.
 
-→ Additional features will be added in version 2.
+→ 버전 2에서는 다양한 기능이 추가될 예정입니다.
 
-## Development Stack
+## 개발 스택
 
-| Category | Technology Stack |
+| 카테고리 | 사용 기술 |
 | -------- | ----------------- |
-| **BackEnd** | Nest.js, Prisma |
-| **DataBase** | MySQL |
-| **Infra** | AWS EC2, Docker, Route 53, ELB |
-| **Tool** | Slack, Postman, Swagger |
+| **백엔드** | Nest.js, Prisma |
+| **데이터베이스** | MySQL |
+| **인프라** | AWS EC2, Docker, Route 53, ELB |
+| **도구** | Slack, Postman, Swagger |
 
-## Getting Started
-
-To get a copy of the project up and running on your local machine for development and testing purposes, follow these steps.
-
-### Prerequisites
-
-- Node.js
-- Docker
-- MySQL
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/ootc.git
-   cd ootc
