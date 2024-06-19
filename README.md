@@ -31,3 +31,6 @@ OOTC는 옷의 정보를 사전에 등록하여 쉽게 찾을 수 있게 하고,
 | **인프라** | AWS EC2, Docker, Route 53, ELB |
 | **도구** | Slack, Postman, Swagger |
 
+
+![image](https://github.com/OOTC-project/OOTC-BE/assets/50650892/91f6a51f-7745-44cc-a326-90a3ab2e6965)
+
