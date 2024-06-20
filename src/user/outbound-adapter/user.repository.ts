@@ -18,7 +18,6 @@ export class UserRepository implements UserOutboundPort {
     }
 
     async update(user: Member, userUpdate: RequestUpdateUserDto): Promise<Member> {
-        console.log('=>(user.repository.ts:21) userUpdate', userUpdate);
         return this.prisma.member.update({
             data: {
                 name: userUpdate.name,
