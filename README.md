@@ -28,7 +28,7 @@ OOTC는 옷의 정보를 사전에 등록하여 쉽게 찾을 수 있게 하고,
 | -------- | ----------------- |
 | **백엔드** | Nest.js, Prisma |
 | **데이터베이스** | MySQL |
-| **인프라** | AWS EC2, Docker, Route 53, ELB |
+| **인프라** | AWS EC2, Docker, Route 53, ELB, S3|
 | **도구** | Slack, Postman, Swagger |
 
 ## ERD
