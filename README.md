@@ -48,3 +48,6 @@ OOTC는 옷의 정보를 사전에 등록하여 쉽게 찾을 수 있게 하고,
     3. 소셜 로그인 구현
     4. session 방식 로그인 구현
 
+### 인프라 다이어그램
+<img width="905" alt="image" src="https://github.com/OOTC-project/OOTC-BE/assets/50650892/8ea15a36-a246-4de3-91fa-d00d6e4cf61f">
+
