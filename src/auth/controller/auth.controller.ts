@@ -83,6 +83,7 @@ export class AuthController {
 
     @Post('find/id')
     @ApiOperation({ summary: '유저 아이디찾기', description: '유저 아이디 찾기 진행' })
+    @ApiBody({ type: RequestFindDto })
     @SuccessResponse(HttpStatus.OK, [
         {
             model: ResponseFindIdClassDto,
