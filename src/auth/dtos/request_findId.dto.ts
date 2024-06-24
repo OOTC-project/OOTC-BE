@@ -16,8 +16,9 @@ export class RequestFindDto {
     readonly email: string;
 
     @ApiProperty({
-        description: '회원id',
+        description: '회원id -> 이 값은 유저 존재 유무 파악때만 사용함',
         example: 'cutestar',
+        required: false,
     })
     readonly userId?: string;
 }
