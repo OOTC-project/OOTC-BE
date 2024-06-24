@@ -81,7 +81,7 @@ export class AuthController {
         return await this.authInboundPort.validateUser(validateData);
     }
 
-    @Get('find/id')
+    @Post('find/id')
     @ApiOperation({ summary: '유저 아이디찾기', description: '유저 아이디 찾기 진행' })
     @SuccessResponse(HttpStatus.OK, [
         {
@@ -98,7 +98,7 @@ export class AuthController {
             message: '이름과 이메일의 계정이 존재하지 않아요',
         },
     ])
-    async findId(@Query() findIdData: RequestFindDto): Promise<ResponseFindIdDto> {
+    async findId(@Body() findIdData: RequestFindDto): Promise<ResponseFindIdDto> {
         const validateUserByName = await this.authInboundPort.findId(findIdData);
 
         return new ResponseFindIdDto(validateUserByName);

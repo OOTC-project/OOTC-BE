@@ -40,7 +40,12 @@ async function bootstrap() {
     const prismaService = app.get(PrismaService);
     await prismaService.enableShutdownHooks(app);
 
-    const configBuilder = new DocumentBuilder().setTitle('OOTC').setDescription('description').setVersion('1.0').build();
+    const configBuilder = new DocumentBuilder()
+        .setTitle('OOTC')
+        .setDescription('description')
+        .setVersion('1.0')
+        .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
+        .build();
 
     const document: OpenAPIObject = SwaggerModule.createDocument(app, configBuilder);
     SwaggerModule.setup('docs', app, document);
