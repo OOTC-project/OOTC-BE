@@ -1,4 +1,4 @@
-import { BadRequestException, Body, ConflictException, Controller, HttpStatus, Inject, NotFoundException, Patch, Post } from '@nestjs/common';
+import { BadRequestException, Body, ConflictException, Controller, Get, HttpStatus, Inject, NotFoundException, Patch, Post, Query } from '@nestjs/common';
 import { AUTH_INBOUND_PORT, AuthInboundPort } from '../inbound-port/auth.inbound-port';
 import { RequestSignupDto } from '../dtos/request_signup.dto';
 import { ResponseSignupDto } from '../dtos/response_signup.dto';
@@ -104,7 +104,7 @@ export class AuthController {
         return new ResponseFindIdDto(validateUserByName);
     }
 
-    @Post('check/validate')
+    @Get('check/validate')
     @ApiOperation({ summary: '해당 정보의 유저 존재 유무를 파악한다', description: '유저 벨리데이션' })
     @SuccessResponse(HttpStatus.OK, [
         {
@@ -121,7 +121,7 @@ export class AuthController {
             model: NotFoundException,
         },
     ])
-    async checkValidate(@Body() findPasswordData: RequestFindDto): Promise<ResponseBooleanDto> {
+    async checkValidate(@Query() findPasswordData: RequestFindDto): Promise<ResponseBooleanDto> {
         return await this.authInboundPort.checkValidate(findPasswordData);
     }
 
