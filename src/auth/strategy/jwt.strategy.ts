@@ -17,16 +17,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         private readonly jwtOutboundPort: JwtOutboundPort,
     ) {
         super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JWT'),
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
             secretOrKey: configAdapter.getConfigByKey('JWT_SECRET'),
         });
     }
 
     async validate(payload: any) {
-        const token = payload.accessToken;
-        const verifiedPayload = await this.jwtOutboundPort.verify(token);
-        const user = await this.authOutboundPort.validateUser(verifiedPayload.userId);
+        const user = await this.authOutboundPort.validateUser(payload.userId);
         if (!user) {
             throw new UnauthorizedException('Unauthorized access');
         }
