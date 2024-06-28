@@ -9,10 +9,9 @@ export class AuthRepository implements AuthOutBoundPort {
     constructor(private readonly prisma: PrismaService) {}
 
     async signUp(userData: RequestSignupDto): Promise<Member> {
-        console.log('=>(auth.repository.ts:12) userData', userData);
         const { userId, password, name, email } = userData;
 
-        const _return_ = await this.prisma.member.create({
+        return this.prisma.member.create({
             data: {
                 email,
                 userId,
@@ -22,13 +21,10 @@ export class AuthRepository implements AuthOutBoundPort {
                 backgroundImg: null,
             },
         });
-        console.log('=>(auth.repository.ts:16) _return_', _return_);
-
-        return _return_;
     }
 
     async validateUser(userId: string): Promise<Member> {
-        return this.prisma.member.findUnique({
+        return this.prisma.member.findFirst({
             where: { userId },
         });
     }

@@ -58,8 +58,7 @@ export class ClothesController {
     async findOne(@Param('id') id: number): Promise<ResponseClothesFindOneDto> {
         const findOneClothesById: Clothes = await this.clothesInboundPort.findOne(id);
 
-        const imagePrefix: string = this.configOutboundPort.getConfigByKey('AWS_IMAGE_PREFIX');
-        return new ResponseClothesFindOneDto(findOneClothesById, imagePrefix);
+        return new ResponseClothesFindOneDto(findOneClothesById);
     }
 
     @Patch('/:id')
@@ -79,8 +78,7 @@ export class ClothesController {
     async update(@Param('id') id: number, @Body() updateClothes: RequestUpdateClothesDto, @UploadedFiles() files: AWSS3Type): Promise<ResponseClothesFindOneDto> {
         const findOneClothesById = await this.clothesInboundPort.update(id, updateClothes, files);
 
-        const imagePrefix = this.configOutboundPort.getConfigByKey('AWS_IMAGE_PREFIX');
-        return new ResponseClothesFindOneDto(findOneClothesById, imagePrefix);
+        return new ResponseClothesFindOneDto(findOneClothesById);
     }
 
     @Delete('/:id')

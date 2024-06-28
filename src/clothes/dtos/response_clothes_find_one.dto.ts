@@ -57,8 +57,8 @@ export class ResponseClothesFindOneDto {
     })
     readonly createdAt: string | Date;
 
-    constructor(clothes, imagePrefix) {
-        this.clothesImg = `${imagePrefix}${clothes.clothesImg}`;
+    constructor(clothes) {
+        this.clothesImg = `${clothes.clothesImg}`;
         this.createdAt = clothes.createdAt;
         this.name = clothes.name;
         this.fkMemberId = clothes.fkMemberId;
