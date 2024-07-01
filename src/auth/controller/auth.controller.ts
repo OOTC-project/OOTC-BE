@@ -37,7 +37,7 @@ export class AuthController {
             model: ConflictException,
             exampleDescription: '이미 겹치는 값이 있을때',
             exampleTitle: '겹치는 아이디의 값이 있을때',
-            message: 'Member_userId_key 유니크 제약 조건이 실패했습니다.',
+            message: '유니크 제약 조건이 실패했습니다. 중복된 값이 존재합니다. -${fields.modelName}의 ${fields.target}가 이미 있습니다',
         },
     ])
     @SimpleErrorResponse(HttpStatus.BAD_REQUEST, [
