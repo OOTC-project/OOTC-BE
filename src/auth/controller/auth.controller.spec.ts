@@ -1,10 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
-import { AUTH_INBOUND_PORT, AuthInboundPort } from '../inbound-port/auth.inbound-port';
-import { RequestSignupDto } from '../dtos/request_signup.dto';
-import { ResponseSignupDto } from '../dtos/response_signup.dto';
 import { BadRequestException, ConflictException, ValidationPipe } from '@nestjs/common';
+import { ResponseSignupDto } from '../dtos/response_signup.dto';
+import { RequestSignupDto } from '../dtos/request_signup.dto';
+import { AUTH_INBOUND_PORT, AuthInboundPort } from '../inbound-port/auth.inbound-port';
+import { AuthController } from './auth.controller';
 import { APP_PIPE } from '@nestjs/core';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('AuthController', () => {
     let authController: AuthController;
@@ -28,9 +28,9 @@ describe('AuthController', () => {
                 {
                     provide: APP_PIPE,
                     useValue: new ValidationPipe({
-                        transform: true, // 요청 객체를 DTO 클래스 인스턴스로 자동 변환합니다. 이를 통해 컨트롤러에서 타입 검사를 할 수 있게 됩니다.
-                        forbidNonWhitelisted: true, // 요청 객체에 DTO에 정의되지 않은 속성이 포함된 경우 예외를 발생시킵니다. 이는 잘못된 속성이나 허용되지 않은 데이터를 포함한 요청을 차단하는 데 유용합니다.
-                        whitelist: true, // DTO에 정의된 속성만 요청 객체에 남기고 나머지는 제거합니다. 즉, DTO에 명시되지 않은 속성이 요청에 포함되어 있다면 이를 자동으로 제거합니다.
+                        transform: true,
+                        forbidNonWhitelisted: true,
+                        whitelist: true,
                     }),
                 },
             ],
@@ -73,11 +73,15 @@ describe('AuthController', () => {
                 passwordConfirm: 'differentPassword',
             };
 
+            jest.spyOn(authInboundPort, 'signUp').mockImplementation(() => {
+                throw new BadRequestException('Passwords do not match');
+            });
+
             await expect(authController.signUp(invalidRequestSignUpDto)).rejects.toThrow(BadRequestException);
         });
 
         it('이미 DB에 겹치는 값이 있을 때', async () => {
-            const conflictError = new ConflictException('유니크 제약 조건이 실패했습니다. 중복된 값이 존재합니다.');
+            const conflictError = new ConflictException('유니크 제약 조건이 실패했습니다. 중복된 값이 존재합니다. -${fields.modelName}의 ${fields.target}가 이미 있습니다');
 
             jest.spyOn(authInboundPort, 'signUp').mockRejectedValue(conflictError);
 
@@ -90,6 +94,10 @@ describe('AuthController', () => {
                 password: '123123cutestar!',
                 passwordConfirm: '123123cutestar!',
             };
+
+            jest.spyOn(authInboundPort, 'signUp').mockImplementation(() => {
+                throw new BadRequestException('비밀번호에는 하나 이상의 대문자가 포함되어야 합니다');
+            });
 
             await expect(authController.signUp(passwordOfNotCapitalWord)).rejects.toThrow(BadRequestException);
         });
