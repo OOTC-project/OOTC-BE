@@ -5,11 +5,11 @@ export class ResponseSignupDto {
     isWithdrawal: boolean;
     createdAt: string | Date;
 
-    constructor(responseOfSignIn: ResponseSignupDto) {
-        this.id = responseOfSignIn.id;
-        this.name = responseOfSignIn.name;
-        this.userId = responseOfSignIn.userId;
-        this.isWithdrawal = responseOfSignIn.isWithdrawal;
-        this.createdAt = responseOfSignIn.createdAt;
+    constructor(responseOfSignUp: ResponseSignupDto) {
+        this.id = responseOfSignUp.id;
+        this.name = responseOfSignUp.name;
+        this.userId = responseOfSignUp.userId;
+        this.isWithdrawal = responseOfSignUp.isWithdrawal;
+        this.createdAt = responseOfSignUp.createdAt;
     }
 }

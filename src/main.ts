@@ -24,7 +24,9 @@ async function bootstrap() {
 
     app.useGlobalPipes(
         new ValidationPipe({
-            transform: true,
+            transform: true, // 요청 객체를 DTO 클래스 인스턴스로 자동 변환합니다. 이를 통해 컨트롤러에서 타입 검사를 할 수 있게 됩니다.
+            forbidNonWhitelisted: true, // 요청 객체에 DTO에 정의되지 않은 속성이 포함된 경우 예외를 발생시킵니다. 이는 잘못된 속성이나 허용되지 않은 데이터를 포함한 요청을 차단하는 데 유용합니다.
+            whitelist: true, // DTO에 정의된 속성만 요청 객체에 남기고 나머지는 제거합니다. 즉, DTO에 명시되지 않은 속성이 요청에 포함되어 있다면 이를 자동으로 제거합니다.
         }),
         new TrimPipe(),
     );
