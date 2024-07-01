@@ -92,7 +92,7 @@ export class AuthController {
             model: BadRequestException,
             exampleDescription: '아이디 혹은 비밀번호가 틀린경우',
             exampleTitle: '아이디 혹은 비밀번호가 틀렸다',
-            message: 'Invalid credentials',
+            message: '해당 ID가진 유저가 없습니다',
         },
     ])
     async signIn(@Body() logInData: RequestSignInDto): Promise<ResponseSignInClassDto> {

@@ -45,7 +45,7 @@ export class AuthService implements AuthInboundPort {
         const user = await this.authOutboundPort.validateUser(userId);
 
         if (!user) {
-            throw new UnauthorizedException('Invalid credentials');
+            throw new UnauthorizedException('해당 ID가진 유저가 없습니다');
         }
 
         const isPasswordValidated: boolean = await bcrypt.compare(password, user.password);
