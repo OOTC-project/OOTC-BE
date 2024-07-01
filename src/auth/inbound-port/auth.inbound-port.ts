@@ -5,11 +5,12 @@ import { RequestFindDto } from '../dtos/request_findId.dto';
 import { ResponseBooleanDto } from '../dtos/response_check_validate_class.dto';
 import { RequestSignupDto } from '../dtos/request_signup.dto';
 import { RequestSignInDto } from '../dtos/request_signIn.dto';
+import { ResponseSignupDto } from '../dtos/response_signup.dto';
 
 export const AUTH_INBOUND_PORT = 'AUTH_INBOUND_PORT' as const;
 
 export interface AuthInboundPort {
-    signUp(userData: RequestSignupDto): Promise<Member>;
+    signUp(userData: RequestSignupDto): Promise<ResponseSignupDto>;
 
     signIn(userData: RequestSignInDto): Promise<ResponseSignInClassDto>;
 
