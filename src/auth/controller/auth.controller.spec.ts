@@ -101,5 +101,47 @@ describe('AuthController', () => {
 
             await expect(authController.signUp(passwordOfNotCapitalWord)).rejects.toThrow(BadRequestException);
         });
+
+        it('비밀번호에 특수문자 없을때', async () => {
+            const passwordOfNotSpecialCharactor = {
+                ...requestSignUpDto,
+                password: '123123cutestar',
+                passwordConfirm: '123123cutestar',
+            };
+
+            jest.spyOn(authInboundPort, 'signUp').mockImplementation(() => {
+                throw new BadRequestException('비밀번호에는 하나 이상의 특수문자가 포함되어야 합니다');
+            });
+
+            await expect(authController.signUp(passwordOfNotSpecialCharactor)).rejects.toThrow(BadRequestException);
+        });
+
+        it('비밀번호 최소자리조건', async () => {
+            const passwordOfNotSpecialCharactor = {
+                ...requestSignUpDto,
+                password: 'Qw3!',
+                passwordConfirm: 'Qw3!',
+            };
+
+            jest.spyOn(authInboundPort, 'signUp').mockImplementation(() => {
+                throw new BadRequestException('비밀번호는 최소 6자 이상이어야 합니다');
+            });
+
+            await expect(authController.signUp(passwordOfNotSpecialCharactor)).rejects.toThrow(BadRequestException);
+        });
+
+        it('비밀번호 최대자리조건', async () => {
+            const passwordOfNotSpecialCharactor = {
+                ...requestSignUpDto,
+                password: 'Qw3!123123313112312321312211',
+                passwordConfirm: 'Qw3!123123313112312321312211',
+            };
+
+            jest.spyOn(authInboundPort, 'signUp').mockImplementation(() => {
+                throw new BadRequestException('비밀번호는 최대 20자 이하여야 합니다');
+            });
+
+            await expect(authController.signUp(passwordOfNotSpecialCharactor)).rejects.toThrow(BadRequestException);
+        });
     });
 });
