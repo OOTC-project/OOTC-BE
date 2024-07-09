@@ -94,6 +94,30 @@ export class AuthController {
             exampleTitle: '아이디 혹은 비밀번호가 틀렸다',
             message: '해당 ID가진 유저가 없습니다',
         },
+        {
+            model: BadRequestException,
+            exampleDescription: '비밀번호에 대문자 없을때',
+            exampleTitle: '비밀번호 대문자 조건',
+            message: '비밀번호에는 하나 이상의 대문자가 포함되어야 합니다',
+        },
+        {
+            model: BadRequestException,
+            exampleDescription: '비밀번호에 특수문자 없을때',
+            exampleTitle: '비밀번호 특수문자 조건',
+            message: '비밀번호에는 하나 이상의 특수문자가 포함되어야 합니다',
+        },
+        {
+            model: BadRequestException,
+            exampleDescription: '비밀번호에 최소자리는 6자리',
+            exampleTitle: '비밀번호 최소자리조건',
+            message: '비밀번호는 최소 6자 이상이어야 합니다',
+        },
+        {
+            model: BadRequestException,
+            exampleDescription: '비밀번호에 최댜자리는 20자리',
+            exampleTitle: '비밀번호 최대자리조건',
+            message: '비밀번호는 최대 20자 이하여야 합니다',
+        },
     ])
     async signIn(@Body() logInData: RequestSignInDto): Promise<ResponseSignInClassDto> {
         return await this.authInboundPort.signIn(logInData);

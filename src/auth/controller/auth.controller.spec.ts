@@ -5,6 +5,8 @@ import { AUTH_INBOUND_PORT, AuthInboundPort } from '../inbound-port/auth.inbound
 import { AuthController } from './auth.controller';
 import { APP_PIPE } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
+import { ResponseSignInClassDto } from '../dtos/response_signIn_class.dto';
+import { RequestSignInDto } from '../dtos/request_signIn.dto';
 
 describe('AuthController', () => {
     let authController: AuthController;
@@ -22,7 +24,7 @@ describe('AuthController', () => {
                         validateUser: jest.fn(),
                         findId: jest.fn(),
                         checkValidate: jest.fn(),
-                        reseetPassword: jest.fn(),
+                        resetPassword: jest.fn(),
                     },
                 },
                 {
@@ -142,6 +144,36 @@ describe('AuthController', () => {
             });
 
             await expect(authController.signUp(passwordOfNotSpecialCharactor)).rejects.toThrow(BadRequestException);
+        });
+    });
+
+    describe('signIn', () => {
+        it('로그인 성공', async () => {
+            const requestOfSignIn: RequestSignInDto = {
+                userId: '투정부려왜애같이',
+                password: '123QWE3eer!',
+            };
+
+            const responseSignIn: ResponseSignInClassDto = {
+                accessToken: 'some Accesstoken',
+            };
+
+            jest.spyOn(authInboundPort, 'signIn').mockResolvedValue(responseSignIn);
+
+            expect(await authController.signIn(requestOfSignIn)).toEqual(responseSignIn);
+        });
+
+        it('아이디와 비밀번호가 틀린경우', async () => {
+            const requestOfSignIn: RequestSignInDto = {
+                userId: '손에쥐어준',
+                password: '123QWE3eer!',
+            };
+
+            jest.spyOn(authInboundPort, 'signIn').mockImplementation(() => {
+                throw new BadRequestException('해당 ID가진 유저가 없습니다');
+            });
+
+            await expect(authController.signIn(requestOfSignIn)).rejects.toThrow(BadRequestException);
         });
     });
 });
