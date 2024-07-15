@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 
 export class RequestRecommendLookDto {
     @ApiProperty({
@@ -6,6 +7,7 @@ export class RequestRecommendLookDto {
         example: 'seoul',
         type: String,
     })
+    @IsString()
     readonly city: string;
 
     @ApiProperty({
@@ -13,5 +15,6 @@ export class RequestRecommendLookDto {
         example: 'KR',
         type: String,
     })
+    @IsString()
     readonly country: string;
 }

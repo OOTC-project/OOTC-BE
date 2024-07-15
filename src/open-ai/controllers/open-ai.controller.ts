@@ -32,6 +32,7 @@ export class OpenAiController {
         },
     ])
     async recommendLook(@Query() { city, country }: RequestRecommendLookDto) {
+        console.log(city, country);
         return this.openAiInboundPort.recommendLook({ city, country });
     }
 }

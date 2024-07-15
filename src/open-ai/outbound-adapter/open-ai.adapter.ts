@@ -53,6 +53,8 @@ export class OpenAiAdapter implements OpenAiOutboundPort {
     }
 
     private async getWeather({ city, country }): Promise<any> {
+        console.log('city', city);
+        console.log('country', country);
         const apiKey = this.configAdapter.getConfigByKey('OPEN_WEATHER_API_KEY');
         const locationData = await this.getCoordinates({ city, country });
 
