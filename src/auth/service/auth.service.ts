@@ -109,7 +109,7 @@ export class AuthService implements AuthInboundPort {
 
         const { id } = findMemberDataByRequest;
 
-        const resetPassword: string = dayjs().unix().toString();
+        const resetPassword: string = `${dayjs().unix().toString()}!PASSWORD`;
 
         const resetHashedPassword: string = await bcrypt.hash(resetPassword, 10);
 
