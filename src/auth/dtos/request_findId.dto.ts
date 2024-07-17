@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class RequestFindDto {
     @ApiProperty({
@@ -13,6 +13,9 @@ export class RequestFindDto {
         description: '이메일',
         example: 'wjdgusxo99@gmail.com',
     })
+    @IsNotEmpty()
+    @IsEmail()
+    @IsString()
     readonly email: string;
 
     @ApiProperty({
@@ -20,5 +23,7 @@ export class RequestFindDto {
         example: 'cutestar',
         required: false,
     })
+    @IsString()
+    @IsNotEmpty()
     readonly userId?: string;
 }
