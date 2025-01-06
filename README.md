@@ -51,4 +51,6 @@ OOTC는 옷의 정보를 사전에 등록하여 쉽게 찾을 수 있게 하고,
 ### 인프라 다이어그램
 <img width="928" alt="image" src="https://github.com/OOTC-project/OOTC-BE/assets/50650892/37ab3970-fa24-4066-84b0-70f3af4b9888">
 
+### Swagger
+https://api.ootc.store/docs
 
